@@ -17,7 +17,6 @@ import android.view.SurfaceView;
 
 public class ImagePreview extends SurfaceView implements Callback {
 	private static final String TAG = "Preview";
-
 	SurfaceHolder mHolder;
 	public Camera camera;
 
@@ -106,11 +105,11 @@ public class ImagePreview extends SurfaceView implements Callback {
 	         result = (info.orientation - degrees + 360) % 360;
 	     }
 	     camera.setDisplayOrientation(result);
-	 }
-
+	}
+	
 	@Override
 	public void draw(Canvas canvas) {
-		//super.draw(canvas);
+		super.draw(canvas);
 		Paint p = new Paint(Color.RED);
 		Log.d(TAG, "draw");
 		canvas.drawText("PREVIEW", canvas.getWidth() / 2,

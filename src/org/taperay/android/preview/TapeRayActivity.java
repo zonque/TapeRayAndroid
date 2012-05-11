@@ -15,8 +15,14 @@ public class TapeRayActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         setContentView(R.layout.main);
+
         imagePreview = new ImagePreview(this);
-        ((FrameLayout) findViewById(R.id.preview)).addView(imagePreview);   
+        ((FrameLayout) findViewById(R.id.preview)).addView(imagePreview);
+
+        TouchImageView imageView = new TouchImageView(this, null);
+        Artwork a = new Artwork("weaver-freeride-flying");        
+        imageView.setImageBitmap(a.getImageBitmap());
+        ((FrameLayout) findViewById(R.id.preview)).addView(imageView);
     }
     
 	public static void setCameraDisplayOrientation(Activity activity,

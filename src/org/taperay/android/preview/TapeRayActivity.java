@@ -8,11 +8,14 @@ import android.widget.FrameLayout;
 public class TapeRayActivity extends Activity {
 	
 	private static ImagePreview imagePreview;
+	private static ContentManager contentManager;
 	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        contentManager = new ContentManager();
         
         setContentView(R.layout.main);
 

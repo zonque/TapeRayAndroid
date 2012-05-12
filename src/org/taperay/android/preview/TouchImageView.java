@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -87,31 +88,6 @@ public class TouchImageView extends ImageView {
 					if (mode == DRAG) {
 						float deltaX = curr.x - last.x;
 						float deltaY = curr.y - last.y;
-						float scaleWidth = Math.round(origWidth * saveScale);
-						float scaleHeight = Math.round(origHeight * saveScale);
-						if (scaleWidth < width) {
-							deltaX = 0;
-							if (y + deltaY > 0)
-								deltaY = -y;
-							else if (y + deltaY < -bottom)
-								deltaY = -(y + bottom);
-						} else if (scaleHeight < height) {
-							deltaY = 0;
-							if (x + deltaX > 0)
-								deltaX = -x;
-							else if (x + deltaX < -right)
-								deltaX = -(x + right);
-						} else {
-							if (x + deltaX > 0)
-								deltaX = -x;
-							else if (x + deltaX < -right)
-								deltaX = -(x + right);
-
-							if (y + deltaY > 0)
-								deltaY = -y;
-							else if (y + deltaY < -bottom)
-								deltaY = -(y + bottom);
-						}
 						matrix.postTranslate(deltaX, deltaY);
 						last.set(curr.x, curr.y);
 					}
@@ -133,7 +109,6 @@ public class TouchImageView extends ImageView {
 				invalidate();
 				return true; // indicate event was handled
 			}
-
 		});
 	}
 
@@ -174,6 +149,7 @@ public class TouchImageView extends ImageView {
 			bottom = height * saveScale - height - (2 * redundantYSpace * saveScale);
 			if (origWidth * saveScale <= width || origHeight * saveScale <= height) {
 				matrix.postScale(mScaleFactor, mScaleFactor, width / 2, height / 2);
+				/*
 				if (mScaleFactor < 1) {
 					matrix.getValues(m);
 					float x = m[Matrix.MTRANS_X];
@@ -192,8 +168,10 @@ public class TouchImageView extends ImageView {
 						}
 					}
 				}
+				*/
 			} else {
 				matrix.postScale(mScaleFactor, mScaleFactor, detector.getFocusX(), detector.getFocusY());
+				/*
 				matrix.getValues(m);
 				float x = m[Matrix.MTRANS_X];
 				float y = m[Matrix.MTRANS_Y];
@@ -207,6 +185,7 @@ public class TouchImageView extends ImageView {
 					else if (y > 0)
 						matrix.postTranslate(0, -y);
 				}
+				*/
 			}
 			return true;
 

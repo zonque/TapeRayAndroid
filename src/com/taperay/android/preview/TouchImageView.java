@@ -7,14 +7,13 @@
  * Extends Android ImageView to include pinch zooming and panning.
  */
 
-package org.taperay.android.preview;
+package com.taperay.android.preview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -74,8 +73,8 @@ public class TouchImageView extends ImageView {
 				mScaleDetector.onTouchEvent(event);
 
 				matrix.getValues(m);
-				float x = m[Matrix.MTRANS_X];
-				float y = m[Matrix.MTRANS_Y];
+				//float x = m[Matrix.MTRANS_X];
+				//float y = m[Matrix.MTRANS_Y];
 				PointF curr = new PointF(event.getX(), event.getY());
 
 				switch (event.getAction()) {

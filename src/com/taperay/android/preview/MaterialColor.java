@@ -1,4 +1,4 @@
-package org.taperay.android.preview;
+package com.taperay.android.preview;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;

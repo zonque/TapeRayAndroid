@@ -1,4 +1,4 @@
-package org.taperay.android.preview;
+package com.taperay.android.preview;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,13 +30,47 @@ public class Artwork {
 	String name;
 	Document xmlDoc;
 	String imageURL;
+	DefaultHttpClient client;
+	HttpGet request;
 	
 	static final String baseURI = "http://taperay.com/artworks/";
 	static final String tag = "Artwork";
 
+	private void retrieveBitmap() {
+		try {
+			request.setURI(new URI(imageURL));
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		HttpResponse resp;
+		try {
+			resp = client.execute(request);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+			return;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		StatusLine status = resp.getStatusLine();
+		if (status.getStatusCode() != 200) {
+		    Log.d(tag, "HTTP error, invalid server status code: " + resp.getStatusLine());  
+		}
+
+		try {
+			BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(resp.getEntity());
+			InputStream is = bufferedHttpEntity.getContent();
+	        bitmap = BitmapFactory.decodeStream(is);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+	
 	private void retrieve() {
-		DefaultHttpClient client = new DefaultHttpClient();
-		HttpGet request = new HttpGet();
 		try {
 			request.setURI(new URI(baseURI + name + ".xml"));
 		} catch (URISyntaxException e) {
@@ -98,47 +132,24 @@ public class Artwork {
 
         Log.d(tag, "URL::: " + imageURL);
         
-        // retrieve image
-
-		try {
-			request.setURI(new URI(imageURL));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		try {
-			resp = client.execute(request);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-		
-		status = resp.getStatusLine();
-		if (status.getStatusCode() != 200) {
-		    Log.d(tag, "HTTP error, invalid server status code: " + resp.getStatusLine());  
-		}
-
-		try {
-			BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(resp.getEntity());
-			InputStream is = bufferedHttpEntity.getContent();
-	        bitmap = BitmapFactory.decodeStream(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
 	}
 	
 	Artwork(String _name) {
+		client = new DefaultHttpClient();
+		request = new HttpGet();
 		name = _name;
+		bitmap = null;
 		retrieve();
 	}
 	
-	Bitmap getImageBitmap() {
-		return bitmap;
+	String getTitle() {
+		return "fixme";
 	}
 	
+	Bitmap getImageBitmap() {
+		if (bitmap == null)
+			retrieveBitmap();
+		
+		return bitmap;
+	}
 }

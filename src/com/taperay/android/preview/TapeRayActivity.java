@@ -1,21 +1,19 @@
-package org.taperay.android.preview;
+package com.taperay.android.preview;
+
+import com.taperay.android.preview.R;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import org.taperay.android.preview.ImagePreview;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 import android.view.View;
 
 public class TapeRayActivity extends Activity {
-	
-	private static ImagePreview imagePreview;
 	private static ContentManager contentManager;
 	
 	private void displayCategories() {
@@ -34,9 +32,8 @@ public class TapeRayActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id) {
-				Toast.makeText(getApplicationContext(),
-					"Click ListItem Number " + position, Toast.LENGTH_LONG)
-					.show();
+				Intent i = new Intent(TapeRayActivity.this, ShowArtworksActivity.class);
+				startActivity(i);
 			}
 		});
 		
@@ -51,49 +48,19 @@ public class TapeRayActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        contentManager = new ContentManager();
 
         setContentView(R.layout.list);
 
-        /*
-        // add imagepreview
-        imagePreview = new ImagePreview(this);
-        ((FrameLayout) findViewById(R.id.preview)).addView(imagePreview);
-
-        // add touch controller
-        final TouchImageView imageView = new TouchImageView(this, null);
-        ((FrameLayout) findViewById(R.id.preview)).addView(imageView);
-         */
-        
 		final ProgressDialog dialog = ProgressDialog.show(this, "", 
                 "Loading data, please wait...", true);
-					
+
 	    new Thread(new Runnable() {
 	        public void run() {
-	    		contentManager.loadData();
-	        	final Artwork a = new Artwork("weaver-freeride-flying");
+	    		TapeRayApplication.getContentManager().loadData();
 	        	dialog.dismiss();
-	            
-	        	/*
-	            imageView.post(new Runnable() {
-	            	public void run() {
-	            		imageView.setImageBitmap(a.getImageBitmap());
-	            	}
-	            });
-	            */
-	        	
-
 	    		displayCategories();
-
 	        }
 	    }).start();
 
     }
-    
-	public static void setCameraDisplayOrientation(Activity activity,
-	         int cameraId, android.hardware.Camera camera) {
-	     int rotation = activity.getWindowManager().getDefaultDisplay()
-	             .getRotation();
-		imagePreview.setCameraDisplayOrientation(cameraId, camera, rotation);
-	}
 }

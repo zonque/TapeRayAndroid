@@ -1,4 +1,4 @@
-package org.taperay.android.preview;
+package com.taperay.android.preview;
 
 import java.io.IOException;
 import java.util.List;

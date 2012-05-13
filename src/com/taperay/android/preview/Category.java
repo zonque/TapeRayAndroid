@@ -1,6 +1,6 @@
-package org.taperay.android.preview;
+package com.taperay.android.preview;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -9,6 +9,7 @@ public class Category {
 
 	String title;
 	int category_id;
+	ArrayList<Artwork> artworks;
 
 	Category(Node node) {
         NodeList properties = node.getChildNodes();
@@ -28,12 +29,10 @@ public class Category {
 	String getTitle() {
 		return title;
 	}
-
-	/*
-	List<Artwork> getArtworks() {
-		list = new List<Artwork>;
+	
+	ArrayList<Artwork> getArtworks() {
+		ArrayList<Artwork> list = new ArrayList<Artwork>();
 		
 		return list;
 	}
-	*/
 }

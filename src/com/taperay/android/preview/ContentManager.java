@@ -1,4 +1,4 @@
-package org.taperay.android.preview;
+package com.taperay.android.preview;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,13 +26,15 @@ import android.util.Log;
 public class ContentManager {
 	static final String baseURI = "http://taperay.com/";
 	static final String tag = "ContentManager";
-	DefaultHttpClient client;
-	HttpGet request;
-	HttpResponse resp;
-	ArrayList<Category> categories;
-	ArrayList<MaterialColor> materialColors;
+	private DefaultHttpClient client;
+	private HttpGet request;
+	private HttpResponse resp;
+	private ArrayList<Category> categories;
+	private ArrayList<MaterialColor> materialColors;
+	private Artwork currentArtwork;
+	private ArrayList<Artwork> currentArtworks;
 	
-	void retrieveCategories() {
+	private void retrieveCategories() {
 		try {
 			request.setURI(new URI(baseURI + "categories.xml"));
 		} catch (URISyntaxException e) {
@@ -88,7 +90,7 @@ public class ContentManager {
         }
 	}
 	
-	void retrieveMaterialColors() {
+	private void retrieveMaterialColors() {
 		try {
 			request.setURI(new URI(baseURI + "material_colors.xml"));
 		} catch (URISyntaxException e) {
@@ -145,19 +147,17 @@ public class ContentManager {
         }
 	}
 	
-	ContentManager() {
-		client = new DefaultHttpClient();
-		request = new HttpGet();
-		categories = new ArrayList<Category>();
-		materialColors = new ArrayList<MaterialColor>();
-	}
-	
-	List<MaterialColor> getMaterialColors() {
+
+	public List<MaterialColor> getMaterialColors() {
 		return materialColors;
 	}
 	
-	List<Category> getCategories() {
+	public List<Category> getCategories() {
 		return categories;
+	}
+	
+	public Artwork getCurrentArtwork() {
+		return currentArtwork;
 	}
 
 	public void loadData() {
@@ -175,5 +175,31 @@ public class ContentManager {
 		}
 		
 		return list;
+	}
+
+	public String[] getArtworkTitles() {
+		String[] list = new String[currentArtworks.size()];
+		int pos = 0;
+		
+		for(Iterator<Artwork> i = currentArtworks.iterator(); i.hasNext();) {
+			Artwork a = (Artwork) i.next();
+			list[pos++] = a.getTitle();
+		}
+		
+		return list;
+	}
+	
+	public void selectCategory(int index) {
+		Category c = categories.get(index);
+		currentArtworks = c.getArtworks();
+		currentArtwork = null;
+	}
+	
+	ContentManager() {
+		client = new DefaultHttpClient();
+		request = new HttpGet();
+		categories = new ArrayList<Category>();
+		materialColors = new ArrayList<MaterialColor>();
+    	currentArtwork = new Artwork("weaver-freeride-flying");
 	}
 }

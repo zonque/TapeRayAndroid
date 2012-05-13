@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,8 +29,8 @@ public class ContentManager {
 	DefaultHttpClient client;
 	HttpGet request;
 	HttpResponse resp;
-	List<Category> categories;
-	List<MaterialColor> materialColors;
+	ArrayList<Category> categories;
+	ArrayList<MaterialColor> materialColors;
 	
 	void retrieveCategories() {
 		try {
@@ -147,12 +148,8 @@ public class ContentManager {
 	ContentManager() {
 		client = new DefaultHttpClient();
 		request = new HttpGet();
-		
 		categories = new ArrayList<Category>();
 		materialColors = new ArrayList<MaterialColor>();
-
-		retrieveCategories();
-		retrieveMaterialColors();
 	}
 	
 	List<MaterialColor> getMaterialColors() {
@@ -161,5 +158,22 @@ public class ContentManager {
 	
 	List<Category> getCategories() {
 		return categories;
+	}
+
+	public void loadData() {
+		retrieveCategories();
+		retrieveMaterialColors();		
+	}
+	
+	public String[] getCategoryTitles() {
+		String[] list = new String[categories.size()];
+		int pos = 0;
+		
+		for(Iterator<Category> i = categories.iterator(); i.hasNext();) {
+			Category c = (Category) i.next();
+			list[pos++] = c.getTitle();
+		}
+		
+		return list;
 	}
 }

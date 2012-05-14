@@ -26,9 +26,21 @@ public class TapeRayActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id) {
-				contentManager.selectCategory(position);
-				Intent i = new Intent(TapeRayActivity.this, ShowArtworksActivity.class);
-				startActivity(i);
+				final ProgressDialog dialog = ProgressDialog.show(TapeRayActivity.this, "", 
+		                "Loading artwork list, please wait...", true);
+				final int index = position;
+				
+			    new Thread(new Runnable() {
+			        public void run() {
+			        	TapeRayApplication app = (TapeRayApplication) getApplication();
+			        	ContentManager contentManager = app.getContentManager();
+						contentManager.selectCategory(index);
+						Intent i = new Intent(TapeRayActivity.this, ShowArtworksActivity.class);
+						dialog.dismiss();
+						startActivity(i);
+			        }
+			    }).start();
+
 			}
 		});
 		

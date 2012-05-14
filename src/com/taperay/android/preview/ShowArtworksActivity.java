@@ -1,7 +1,6 @@
 package com.taperay.android.preview;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +15,16 @@ public class ShowArtworksActivity extends Activity {
 	private ContentManager contentManager;
 	private String[] artworkTitles;
 
-	private void displayArtworks() {
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.artworks);
+        
+    	TapeRayApplication app = (TapeRayApplication) getApplication();
+    	contentManager = app.getContentManager();
+    	artworkTitles = contentManager.getArtworkTitles();
 		final ListView listView = (ListView) findViewById(R.id.list);
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowArtworksActivity.this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, artworkTitles);
@@ -32,34 +40,5 @@ public class ShowArtworksActivity extends Activity {
 		});
 
 		listView.setAdapter(adapter);
-		
-		listView.post(new Runnable() {
-			public void run() {
-		        //setTitle("ficken!"); //String.format("%d", artworkTitles.length));
-	    		//listView.setAdapter(adapter);
-			}
-		});
-	}
-
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.artworks);
-        
-    	TapeRayApplication app = (TapeRayApplication) getApplication();
-    	contentManager = app.getContentManager();
-
-		final ProgressDialog dialog = ProgressDialog.show(this, "", 
-                "Loading artwork list, please wait...", true);
-
-	    new Thread(new Runnable() {
-	        public void run() {
-	        	artworkTitles = contentManager.getArtworkTitles();
-	        	dialog.dismiss();
-	    		displayArtworks();
-	        }
-	    }).start();
     }
 }

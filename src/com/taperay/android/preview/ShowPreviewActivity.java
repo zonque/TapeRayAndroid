@@ -4,15 +4,20 @@ import com.taperay.android.preview.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 public class ShowPreviewActivity extends Activity {
 	private static ImagePreview imagePreview;
+	private ContentManager contentManager;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.preview);
+
+    	TapeRayApplication app = (TapeRayApplication) getApplication();
+    	contentManager = app.getContentManager();
 
         // add imagepreview
         imagePreview = new ImagePreview(this);
@@ -24,17 +29,18 @@ public class ShowPreviewActivity extends Activity {
         
 	    new Thread(new Runnable() {
 	        public void run() {
-	        	final Artwork a = new Artwork("weaver-freeride-flying");
-	        	//dialog.dismiss();
+	        	final Artwork a = contentManager.getCurrentArtwork();
+	        	Log.v("XXX", "CURRENT ARTWORK " + a.getTitle());
+	        	a.getImageBitmap();
 	            
 	            imageView.post(new Runnable() {
 	            	public void run() {
 	            		imageView.setImageBitmap(a.getImageBitmap());
+	    	        	//dialog.dismiss();
 	            	}
 	            });
 	        }
 	    }).start();
-
     }
 
 	public static void setCameraDisplayOrientation(Activity activity,

@@ -2,37 +2,44 @@ package com.taperay.android.preview;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import android.util.Log;
 
-public class Category {
-
-	String title;
-	int category_id;
-	ArrayList<Artwork> artworks;
-
+public class Category extends ServerObject {
+	private RestClient restClient;
+	
 	Category(Node node) {
-        NodeList properties = node.getChildNodes();
+		tag = "Category";
 
-        for (int j = 0; j < properties.getLength(); j++){
-            Node property = properties.item(j);
-            String name = property.getNodeName();
-            
-            if (name.equalsIgnoreCase("id"))
-            	category_id = Integer.parseInt(property.getFirstChild().getNodeValue());
+		restClient = new RestClient("categories");
+		readFromNode(node);
+	}
+	
+	public void retrieve() {
 
-            if (name.equalsIgnoreCase("title_en"))
-            	title = new String(property.getFirstChild().getNodeValue());
-        }
 	}
 	
 	String getTitle() {
-		return title;
+		return propertyHash.get("title_de");
 	}
 	
 	ArrayList<Artwork> getArtworks() {
-		ArrayList<Artwork> list = new ArrayList<Artwork>();
+		ArrayList<Artwork> artworks = new ArrayList<Artwork>();
+
+		Element root = restClient.get(propertyHash.get("id"));
+        NodeList items = root.getElementsByTagName("artwork");
+        
+        Log.v(tag, String.format(">>>>>> %d artworks", items.getLength()));
+        
+        for (int i = 0; i < items.getLength(); i++) {
+        	Artwork a = new Artwork(items.item(i));
+        	
+        	if (a.getTitle() != null)
+        		artworks.add(a);
+        }
 		
-		return list;
+		return artworks;
 	}
 }

@@ -15,15 +15,9 @@ import android.view.View;
 
 public class TapeRayActivity extends Activity {
 	private static ContentManager contentManager;
+	private String[] categoryTitles;
 	
 	private void displayCategories() {
-		runOnUiThread(new Runnable(){
-			public void run() {
-				//setContentView(R.layout.list);
-			}
-		});
-		
-		final String[] categoryTitles = contentManager.getCategoryTitles();
 		final ListView listView = (ListView) findViewById(R.id.list);
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(TapeRayActivity.this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, categoryTitles);
@@ -32,6 +26,7 @@ public class TapeRayActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 				int position, long id) {
+				contentManager.selectCategory(position);
 				Intent i = new Intent(TapeRayActivity.this, ShowArtworksActivity.class);
 				startActivity(i);
 			}
@@ -49,14 +44,17 @@ public class TapeRayActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.list);
+        setContentView(R.layout.categories);
 
 		final ProgressDialog dialog = ProgressDialog.show(this, "", 
                 "Loading data, please wait...", true);
 
 	    new Thread(new Runnable() {
 	        public void run() {
-	    		TapeRayApplication.getContentManager().loadData();
+	        	TapeRayApplication app = (TapeRayApplication) getApplication();
+	        	contentManager = app.getContentManager();
+	        	contentManager.loadData();
+	        	categoryTitles = contentManager.getCategoryTitles();
 	        	dialog.dismiss();
 	    		displayCategories();
 	        }

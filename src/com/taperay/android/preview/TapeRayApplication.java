@@ -5,8 +5,7 @@ import android.app.Application;
 public class TapeRayApplication extends Application {
 	
 	private static TapeRayApplication singleton;
-	private static ContentManager contentManager;
-	
+	private ContentManager contentManager;
 	public static TapeRayApplication getInstance() {
         return singleton;
     }
@@ -15,10 +14,10 @@ public class TapeRayApplication extends Application {
     public void onCreate() {
         super.onCreate();
         singleton = this;
-        //contentManager = new ContentManager();
+        contentManager = new ContentManager();
     }
 
-	public static ContentManager getContentManager() {
+	public ContentManager getContentManager() {
 		return contentManager;
 	}
 }

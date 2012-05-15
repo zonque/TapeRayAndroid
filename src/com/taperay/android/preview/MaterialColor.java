@@ -22,8 +22,6 @@ public class MaterialColor {
 				r = (byte) (Integer.parseInt(s.substring(0, 2), 16));
 				g = (byte) (Integer.parseInt(s.substring(2, 4), 16));
 				b = (byte) (Integer.parseInt(s.substring(4, 6), 16));
-				
-				Log.v("BLUBB", s + String.format("    -- %02x %02x %02x", r, g, b));
 			}
 
 			if (name.equalsIgnoreCase("title_de"))

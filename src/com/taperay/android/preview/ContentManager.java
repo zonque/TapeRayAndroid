@@ -7,8 +7,6 @@ import java.util.List;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import android.util.Log;
-
 public class ContentManager {
 	static final String tag = "ContentManager";
 
@@ -38,14 +36,11 @@ public class ContentManager {
         for (int i = 0; i < items.getLength(); i++) {
         	MaterialColor mc = new MaterialColor(items.item(i));
         	materialColors.add(mc);
-        	Log.v(tag, "GOT COLOR: " + mc.getTitle() + String.format(" >> %d %d %d", mc.getRed(), mc.getGreen(), mc.getBlue()));
         }
         
-        currentColor = materialColors.get(8);
-        Log.v(tag, "Current color: " + currentColor.getTitle());
+        currentColor = materialColors.get(0);
 	}
 	
-
 	public List<MaterialColor> getMaterialColors() {
 		return materialColors;
 	}

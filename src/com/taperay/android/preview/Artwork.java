@@ -105,8 +105,6 @@ public class Artwork extends ServerObject {
 		
 		int size = bitmap.getHeight() * bitmap.getRowBytes();
 	    ByteBuffer buffer = ByteBuffer.allocate(size);
-		Log.v("XXX", String.format(" image %d x %d ---> size = %d -- %d -- %d", bitmap.getHeight(), bitmap.getWidth(), size, buffer.remaining(), size / (bitmap.getHeight() * bitmap.getWidth())));
-
 		buffer.order(ByteOrder.nativeOrder());
 		
 		bitmap.copyPixelsToBuffer(buffer);

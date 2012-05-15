@@ -4,13 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
+import android.content.res.Configuration;
+
 import android.hardware.Camera;
-import android.hardware.Camera.PreviewCallback;
-import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -36,29 +32,6 @@ public class ImagePreview extends SurfaceView implements Callback {
 		camera = Camera.open();
 		try {
 			camera.setPreviewDisplay(holder);
-
-			camera.setPreviewCallback(new PreviewCallback() {
-
-				public void onPreviewFrame(byte[] data, Camera arg1) {
-					/*
-					FileOutputStream outStream = null;
-					try {
-						outStream = new FileOutputStream(String.format(
-								"/sdcard/%d.jpg", System.currentTimeMillis()));
-						outStream.write(data);
-						outStream.close();
-						Log.d(TAG, "onPreviewFrame - wrote bytes: "
-								+ data.length);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-					}
-					ImagePreview.this.invalidate();
-					 */
-				}
-			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -81,40 +54,17 @@ public class ImagePreview extends SurfaceView implements Callback {
 		List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
 		Camera.Size previewSize = previewSizes.get(0);
 		parameters.setPreviewSize(previewSize.width, previewSize.height);
+		
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			parameters.set("orientation", "portrait");
+			camera.setDisplayOrientation(90);
+		}
+		
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			parameters.set("orientation", "landscape");
+		}
+	
 		camera.setParameters(parameters);
-		camera.setDisplayOrientation(90);
 		camera.startPreview();
-	}
-	
-	public void setCameraDisplayOrientation(int cameraId, android.hardware.Camera camera, int rotation) {
-	     android.hardware.Camera.CameraInfo info =
-	             new android.hardware.Camera.CameraInfo();
-	     android.hardware.Camera.getCameraInfo(cameraId, info);
-
-	     int degrees = 0;
-	     switch (rotation) {
-	         case Surface.ROTATION_0: degrees = 0; break;
-	         case Surface.ROTATION_90: degrees = 90; break;
-	         case Surface.ROTATION_180: degrees = 180; break;
-	         case Surface.ROTATION_270: degrees = 270; break;
-	     }
-
-	     int result;
-	     if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-	         result = (info.orientation + degrees) % 360;
-	         result = (360 - result) % 360;  // compensate the mirror
-	     } else {  // back-facing
-	         result = (info.orientation - degrees + 360) % 360;
-	     }
-	     camera.setDisplayOrientation(result);
-	}
-	
-	@Override
-	public void draw(Canvas canvas) {
-		super.draw(canvas);
-		Paint p = new Paint(Color.RED);
-		Log.d(TAG, "draw");
-		canvas.drawText("PREVIEW", canvas.getWidth() / 2,
-				canvas.getHeight() / 2, p);
 	}
 }

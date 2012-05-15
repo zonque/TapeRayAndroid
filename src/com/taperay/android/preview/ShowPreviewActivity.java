@@ -9,6 +9,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -16,7 +19,29 @@ import android.widget.FrameLayout;
 public class ShowPreviewActivity extends Activity {
 	private static ImagePreview imagePreview;
 	private ContentManager contentManager;
+	private Artwork artwork;
+	private TouchImageView imageView;
+	
+	void reloadImage() {
+        final ProgressDialog dialog = ProgressDialog.show(this, "", 
+                "Loading artwork, please wait...", true);
 
+        new Thread(new Runnable() {
+        	public void run() {
+        		final Bitmap b = artwork.getImageBitmap();
+        		artwork.setBitmapColor(contentManager.getCurrentColor());
+        		
+        		imageView.post(new Runnable() {
+        			public void run() {
+        				imageView.setImageBitmap(b);
+            	        dialog.dismiss();
+        			}
+        		});
+        	}
+        }).start();
+	}
+	
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -30,43 +55,47 @@ public class ShowPreviewActivity extends Activity {
         ((FrameLayout) findViewById(R.id.preview)).addView(imagePreview);
 
         // add touch controller
-        final TouchImageView imageView = new TouchImageView(this, null);
+        imageView = new TouchImageView(this, null);
         ((FrameLayout) findViewById(R.id.preview)).addView(imageView);
         
         final Button button = (Button) findViewById(R.id.order_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	Artwork a = contentManager.getCurrentArtwork();
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(a.getURL()));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(artwork.getURL()));
                 startActivity(browserIntent);
             }
         });
 
-        final Artwork a = contentManager.getCurrentArtwork();
-        setTitle(a.getTitle());
+        artwork = contentManager.getCurrentArtwork();
+        setTitle(artwork.getTitle());
 
-        final ProgressDialog dialog = ProgressDialog.show(this, "", 
-                "Loading artwork, please wait...", true);
-
-        new Thread(new Runnable() {
-        	public void run() {
-        		final Bitmap b = a.getImageBitmap();
-        		a.setBitmapColor(contentManager.getCurrentColor());
-        		
-        		imageView.post(new Runnable() {
-        			public void run() {
-        				imageView.setImageBitmap(b);
-            	        dialog.dismiss();
-        			}
-        		});
-        	}
-        }).start();
+        reloadImage();
     }
-
-	public static void setCameraDisplayOrientation(Activity activity,
-	         int cameraId, android.hardware.Camera camera) {
-	     int rotation = activity.getWindowManager().getDefaultDisplay()
-	             .getRotation();
-		imagePreview.setCameraDisplayOrientation(cameraId, camera, rotation);
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.preview_menu, menu);
+	    
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.change_color:
+	        	Intent i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
+				startActivity(i);
+	        	return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		reloadImage();
 	}
 }

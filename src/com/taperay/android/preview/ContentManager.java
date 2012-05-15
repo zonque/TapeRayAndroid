@@ -87,6 +87,18 @@ public class ContentManager {
 		return list;
 	}
 	
+	public String[] getColorTitles() {
+		String[] list = new String[materialColors.size()];
+		int pos = 0;
+		
+		for(Iterator<MaterialColor> i = materialColors.iterator(); i.hasNext();) {
+			MaterialColor mc = (MaterialColor) i.next();
+			list[pos++] = mc.getTitle();
+		}
+
+		return list;
+	}
+	
 	public void selectCategory(int index) {
 		Category c = categories.get(index);
 		currentArtworks = c.getArtworks();
@@ -96,6 +108,10 @@ public class ContentManager {
 
 	public void selectArtwork(int index) {
 		currentArtwork = currentArtworks.get(index);
+	}
+	
+	public void selectMaterialColor(int index) {
+		currentColor = materialColors.get(index);
 	}
 	
 	public String getCurrentTitle() {

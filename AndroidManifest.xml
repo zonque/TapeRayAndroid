@@ -24,6 +24,7 @@
 
         <activity android:name=".ShowArtworksActivity" />
         <activity android:name=".ShowPreviewActivity" />
+        <activity android:name=".ShowColorsActivity" />
         
 	</application>
 

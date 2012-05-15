@@ -16,6 +16,8 @@ public class ContentManager {
 	private ArrayList<MaterialColor> materialColors;
 	private Artwork currentArtwork;
 	private ArrayList<Artwork> currentArtworks;
+	private String currentTitle;
+	private MaterialColor currentColor;
 	
 	private void retrieveCategories() {
 		RestClient restClient = new RestClient("categories");
@@ -36,8 +38,11 @@ public class ContentManager {
         for (int i = 0; i < items.getLength(); i++) {
         	MaterialColor mc = new MaterialColor(items.item(i));
         	materialColors.add(mc);
-        	Log.v(tag, "GOT COLOR: " + mc.getTitle());
+        	Log.v(tag, "GOT COLOR: " + mc.getTitle() + String.format(" >> %d %d %d", mc.getRed(), mc.getGreen(), mc.getBlue()));
         }
+        
+        currentColor = materialColors.get(8);
+        Log.v(tag, "Current color: " + currentColor.getTitle());
 	}
 	
 
@@ -86,15 +91,24 @@ public class ContentManager {
 		Category c = categories.get(index);
 		currentArtworks = c.getArtworks();
 		currentArtwork = null;
+		currentTitle = "TapeRay > " + c.getTitle();
 	}
 
 	public void selectArtwork(int index) {
 		currentArtwork = currentArtworks.get(index);
 	}
 	
+	public String getCurrentTitle() {
+		return currentTitle;
+	}
+	
 	ContentManager() {
 		categories = new ArrayList<Category>();
 		materialColors = new ArrayList<MaterialColor>();
-    	currentArtwork = new Artwork("weaver-freeride-flying");
+    	currentArtwork = null;
+	}
+
+	public MaterialColor getCurrentColor() {
+		return currentColor;
 	}
 }

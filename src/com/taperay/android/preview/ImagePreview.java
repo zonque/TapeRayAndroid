@@ -69,6 +69,8 @@ public class ImagePreview extends SurfaceView implements Callback {
 		// Because the CameraDevice object is not a shared resource, it's very
 		// important to release it when the activity is paused.
 		camera.stopPreview();
+		camera.setPreviewCallback(null);
+		camera.release();
 		camera = null;
 	}
 

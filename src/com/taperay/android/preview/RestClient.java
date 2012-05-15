@@ -40,11 +40,13 @@ public class RestClient {
 	
 	public Element get(String id) {
 		try {
+			String fetch_name = name;
+			
 			if (id != null)
-				name += "/" + id;
+				fetch_name += "/" + id;
 
-			request.setURI(new URI(baseURI + name + ".xml"));
-			Log.v("XXX", "GET " + baseURI + name + ".xml");
+			request.setURI(new URI(baseURI + fetch_name + ".xml"));
+			Log.v("XXX", "GET " + baseURI + fetch_name + ".xml");
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

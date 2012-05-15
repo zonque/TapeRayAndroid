@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -86,14 +88,47 @@ public class Artwork extends ServerObject {
 //		retrieve();
 	}
 
-	String getTitle() {
+	public String getTitle() {
 		return propertyHash.get("title");
 	}
 	
-	Bitmap getImageBitmap() {
+	public Bitmap getImageBitmap() {
 		if (bitmap == null)
 			retrieveBitmap();
 		
 		return bitmap;
+	}
+
+	public void setBitmapColor(MaterialColor color) {
+		if (bitmap == null)
+			return;
+		
+		int size = bitmap.getHeight() * bitmap.getRowBytes();
+	    ByteBuffer buffer = ByteBuffer.allocate(size);
+		Log.v("XXX", String.format(" image %d x %d ---> size = %d -- %d -- %d", bitmap.getHeight(), bitmap.getWidth(), size, buffer.remaining(), size / (bitmap.getHeight() * bitmap.getWidth())));
+
+		buffer.order(ByteOrder.nativeOrder());
+		
+		bitmap.copyPixelsToBuffer(buffer);
+		byte[] array = buffer.array();
+
+		for (int i = 0; i < size; i += 4) {
+			int alpha = (int) array[i + 3];
+
+			if (alpha != 0) {
+				array[i + 0] = color.getRed();
+				array[i + 1] = color.getGreen();
+				array[i + 2] = color.getBlue();
+				array[i + 3] = (byte) 0xff;
+			}
+		}
+
+		buffer.rewind();
+	    bitmap.copyPixelsFromBuffer(buffer);
+	    bitmap.prepareToDraw();
+	}
+	
+	public String getURL() {
+		return propertyHash.get("url");
 	}
 }

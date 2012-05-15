@@ -25,6 +25,8 @@ public class ShowArtworksActivity extends Activity {
     	TapeRayApplication app = (TapeRayApplication) getApplication();
     	contentManager = app.getContentManager();
     	artworkTitles = contentManager.getArtworkTitles();
+    	setTitle(contentManager.getCurrentTitle());
+    	
 		final ListView listView = (ListView) findViewById(R.id.list);
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowArtworksActivity.this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, artworkTitles);

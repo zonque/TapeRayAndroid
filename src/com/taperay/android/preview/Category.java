@@ -18,7 +18,7 @@ public class Category extends ServerObject {
 	}
 	
 	public void retrieve() {
-
+		
 	}
 	
 	String getTitle() {
@@ -30,8 +30,6 @@ public class Category extends ServerObject {
 
 		Element root = restClient.get(propertyHash.get("id"));
         NodeList items = root.getElementsByTagName("artwork");
-        
-        Log.v(tag, String.format(">>>>>> %d artworks", items.getLength()));
         
         for (int i = 0; i < items.getLength(); i++) {
         	Artwork a = new Artwork(items.item(i));

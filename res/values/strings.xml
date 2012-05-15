@@ -3,5 +3,6 @@
 
     <string name="hello">Hello World, TapeRayActivity!</string>
     <string name="app_name">TapeRay</string>
+    <string name="order_artwork">Order this artwork</string>
 
 </resources>

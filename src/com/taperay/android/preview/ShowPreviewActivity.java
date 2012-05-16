@@ -1,18 +1,12 @@
 package com.taperay.android.preview;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
 import com.taperay.android.preview.R;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;

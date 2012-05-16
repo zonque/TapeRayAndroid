@@ -1,6 +1,5 @@
 package com.taperay.android.preview;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class ShowColorsActivity extends Activity {
+public class ShowColorsActivity extends TapeRayActivity {
 
 	private ContentManager contentManager;
 	private String[] colorTitles;

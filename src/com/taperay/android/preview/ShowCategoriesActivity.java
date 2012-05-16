@@ -1,9 +1,5 @@
 package com.taperay.android.preview;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
 import com.taperay.android.preview.R;
 
 import android.app.ProgressDialog;

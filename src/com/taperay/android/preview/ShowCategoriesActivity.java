@@ -13,13 +13,13 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
 
-public class TapeRayActivity extends Activity {
+public class ShowCategoriesActivity extends Activity {
 	private static ContentManager contentManager;
 	private String[] categoryTitles;
 
 	private void displayCategories() {
 		final ListView listView = (ListView) findViewById(R.id.list);
-		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(TapeRayActivity.this,
+		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowCategoriesActivity.this,
 				android.R.layout.simple_list_item_1, android.R.id.text1, categoryTitles);
 
 		listView.setOnItemClickListener(new OnItemClickListener() {
@@ -27,7 +27,7 @@ public class TapeRayActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				final ProgressDialog dialog =
-						ProgressDialog.show(TapeRayActivity.this,
+						ProgressDialog.show(ShowCategoriesActivity.this,
 								getResources().getString(R.string.progress_dialog_header),
 								getResources().getString(R.string.loading_artworks),
 								true);
@@ -38,7 +38,7 @@ public class TapeRayActivity extends Activity {
 						TapeRayApplication app = (TapeRayApplication) getApplication();
 						ContentManager contentManager = app.getContentManager();
 						contentManager.selectCategory(index);
-						Intent i = new Intent(TapeRayActivity.this, ShowArtworksActivity.class);
+						Intent i = new Intent(ShowCategoriesActivity.this, ShowArtworksActivity.class);
 						dialog.dismiss();
 						startActivity(i);
 					}
@@ -78,6 +78,5 @@ public class TapeRayActivity extends Activity {
 				displayCategories();
 			}
 		}).start();
-
 	}
 }

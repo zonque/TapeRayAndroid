@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,10 +20,17 @@ public class ShowPreviewActivity extends Activity {
 	private Artwork artwork;
 	private TouchImageView imageView;
 	private ProgressDialog dialog;
+	private Bitmap bitmap;
 
-	void reloadImage() {
+	void loadImage() {
 		if (dialog != null)
 			dialog.dismiss();
+		
+		if (bitmap != null) {
+			artwork.setBitmapColor(contentManager.getCurrentColor());
+			imageView.setImageBitmap(bitmap);
+			return;
+		}
 		
 		dialog = ProgressDialog.show(this,
 						getResources().getString(R.string.progress_dialog_header),
@@ -31,18 +39,19 @@ public class ShowPreviewActivity extends Activity {
 
 		new Thread(new Runnable() {
 			public void run() {
-				final Bitmap b = artwork.getImageBitmap();
+				bitmap = artwork.getImageBitmap();
 				artwork.setBitmapColor(contentManager.getCurrentColor());
 
 				imageView.post(new Runnable() {
 					public void run() {
-						imageView.setImageBitmap(b);
-						if (dialog != null) {
-							dialog.dismiss();
-							dialog = null;
-						}
+						imageView.setImageBitmap(bitmap);
 					}
 				});
+				
+				if (dialog != null) {
+					dialog.dismiss();
+					dialog = null;
+				}
 			}
 		}).start();
 	}
@@ -67,7 +76,7 @@ public class ShowPreviewActivity extends Activity {
 		artwork = contentManager.getCurrentArtwork();
 		setTitle(artwork.getTitle());
 
-		reloadImage();
+		loadImage();
 	}
 
 	@Override
@@ -107,6 +116,6 @@ public class ShowPreviewActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		reloadImage();
+		loadImage();
 	}
 }

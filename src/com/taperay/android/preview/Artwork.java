@@ -66,6 +66,7 @@ public class Artwork extends ServerObject {
 		}
 	}
 
+	/*
 	private void retrieve() {
 		Element root = restClient.get(propertyHash.get("id"));
 
@@ -79,6 +80,7 @@ public class Artwork extends ServerObject {
 		bitmap = null;
 		//		retrieve();
 	}
+	*/
 
 	public Artwork(Node node) {
 		restClient = new RestClient("artworks");

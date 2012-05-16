@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">TapeRay</string>
+    <string name="about_taperay">Über TapeRay</string>
     <string name="order_artwork">Artwork bestellen</string>
     <string name="progress_dialog_header">TapeRay Server</string>
     <string name="loading_data">Daten werden geladen, bitte warten …</string>
@@ -11,5 +12,14 @@
     <string name="categories">Kategorien</string>
     <string name="network_error_title">Netzwerkfehler</string>
     <string name="network_error_message">Daten konnten nicht geladen werden.</string>
+    <string name="about_taperay_message">
+        TapeRay ist als Community für Kunstbegeisterte ins Leben gerufen worden, 
+        die als Format und Ausdrucksmittel für ihre Werke Vinylfolie verwenden.
+        Diese Art von Kunst wird auch WANDTATTOO genannt.
+        Diese Applikation ermöglicht es, die TapeRay-Artworks live in einem
+        Videobild anzuschauen und somit eine gute Vorstellung zu erhalten, wie
+        diese Werke in den eigenen vier Wänden wirken können.
+        Mehr Informationen finden sich auf unserer Webseite: http://taperay.com
+	</string>
     
 </resources>

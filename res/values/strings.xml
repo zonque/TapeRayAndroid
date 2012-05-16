@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name">TapeRay</string>
+    <string name="about_taperay">About TapeRay</string>
     <string name="order_artwork">Order artwork</string>
     <string name="progress_dialog_header">TapeRay Server</string>
     <string name="loading_data">Loading data, please wait …</string>
@@ -11,5 +12,15 @@
 	<string name="categories">Categories</string>
 	<string name="network_error_title">Network Error</string>
 	<string name="network_error_message">Unable to load data from server.</string>
+	<string name="about_taperay_message">
+	    TapeRay was developed as a community for art-enthusiasts using vinyl
+	    foil as their expression media. This type of art is also widely known
+	    as WALL DECAL.
+     	This application is able to map all TapeRay artworks into a live
+        video image, recorded by the camera of your mobile phone.
+        You can resize the artworks with finger gestures and move them around
+        to get a feeling of how they might look like on the place where you want
+        them. Check out our website for more information: http://taperay.com
+    </string>
 	
 </resources>

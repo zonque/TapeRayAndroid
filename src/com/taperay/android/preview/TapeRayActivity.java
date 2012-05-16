@@ -26,8 +26,11 @@ public class TapeRayActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final ProgressDialog dialog = ProgressDialog.show(TapeRayActivity.this, "", 
-						"Loading artwork list, please wait...", true);
+				final ProgressDialog dialog =
+						ProgressDialog.show(TapeRayActivity.this,
+								getResources().getString(R.string.progress_dialog_header),
+								getResources().getString(R.string.loading_artworks),
+								true);
 				final int index = position;
 
 				new Thread(new Runnable() {
@@ -59,8 +62,11 @@ public class TapeRayActivity extends Activity {
 		setContentView(R.layout.categories);
 		setTitle("TapeRay > Categories");
 
-		final ProgressDialog dialog = ProgressDialog.show(this, "", 
-				"Loading data, please wait...", true);
+		final ProgressDialog dialog =
+				ProgressDialog.show(this,
+						getResources().getString(R.string.progress_dialog_header), 
+						getResources().getString(R.string.loading_data), 
+						true);
 
 		new Thread(new Runnable() {
 			public void run() {

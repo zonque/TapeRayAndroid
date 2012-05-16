@@ -27,21 +27,21 @@ public class RestClient {
 	private DefaultHttpClient client;
 	private HttpGet request;
 	private HttpResponse resp;
-	
+
 	RestClient(String _name) {
 		name = _name;
 		client = new DefaultHttpClient();
 		request = new HttpGet();
 	}
-	
+
 	public Element index() {
 		return get(null);
 	}
-	
+
 	public Element get(String id) {
 		try {
 			String fetch_name = name;
-			
+
 			if (id != null)
 				fetch_name += "/" + id;
 
@@ -63,21 +63,21 @@ public class RestClient {
 
 		StatusLine status = resp.getStatusLine();
 		if (status.getStatusCode() != 200) {
-		    Log.d(tag, "HTTP error, invalid server status code: " + resp.getStatusLine());  
+			Log.d(tag, "HTTP error, invalid server status code: " + resp.getStatusLine());  
 		}
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder;
-		
+
 		try {
 			builder = factory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 		Document xmlDoc;
-		
+
 		try {
 			xmlDoc = builder.parse(resp.getEntity().getContent());
 		} catch (IllegalStateException e) {

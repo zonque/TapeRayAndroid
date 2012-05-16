@@ -33,7 +33,7 @@ public class TouchImageView extends ImageView {
 	PointF last = new PointF();
 	PointF start = new PointF();
 	float minScale = 0.1f;
-	float maxScale = 3f;
+	float maxScale = 1f;
 	float[] m;
 
 	float redundantXSpace, redundantYSpace;

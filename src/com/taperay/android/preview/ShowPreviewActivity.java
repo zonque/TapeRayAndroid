@@ -20,10 +20,16 @@ public class ShowPreviewActivity extends Activity {
 	private ContentManager contentManager;
 	private Artwork artwork;
 	private TouchImageView imageView;
+	private ProgressDialog dialog;
 
 	void reloadImage() {
-		final ProgressDialog dialog = ProgressDialog.show(this, "", 
-				"Loading artwork, please wait...", true);
+		if (dialog != null)
+			dialog.dismiss();
+		
+		dialog = ProgressDialog.show(this,
+						getResources().getString(R.string.progress_dialog_header),
+						getResources().getString(R.string.loading_artwork),
+						true);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -33,7 +39,10 @@ public class ShowPreviewActivity extends Activity {
 				imageView.post(new Runnable() {
 					public void run() {
 						imageView.setImageBitmap(b);
-						dialog.dismiss();
+						if (dialog != null) {
+							dialog.dismiss();
+							dialog = null;
+						}
 					}
 				});
 			}
@@ -75,7 +84,6 @@ public class ShowPreviewActivity extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.preview_menu, menu);
-
 		return true;
 	}
 
@@ -92,6 +100,14 @@ public class ShowPreviewActivity extends Activity {
 		}
 	}
 
+	protected void onPause() {
+		super.onPause();
+		if (dialog != null) {
+			dialog.dismiss();
+			dialog = null;
+		}
+	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();

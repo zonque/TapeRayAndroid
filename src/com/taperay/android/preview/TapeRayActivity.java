@@ -60,7 +60,7 @@ public class TapeRayActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.categories);
-		setTitle("TapeRay > Categories");
+		setTitle("TapeRay > " + getResources().getString(R.string.categories));
 
 		final ProgressDialog dialog =
 				ProgressDialog.show(this,

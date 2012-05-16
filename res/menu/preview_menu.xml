@@ -7,6 +7,6 @@
           android:title="@string/change_color" />
     
     <item android:id="@+id/visit_website"
-          android:icon="@android:drawable/ic_menu_mark"
+          android:icon="@android:drawable/ic_menu_gallery"
           android:title="@string/order_artwork" />
 </menu>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TapeRay</string>
+    <string name="order_artwork">Artwork bestellen</string>
+    <string name="progress_dialog_header">TapeRay Server</string>
+    <string name="loading_data">Daten werden geladen, bitte warten …</string>
+    <string name="loading_artworks">Artworks werden geladen, bitte warten …</string>
+    <string name="loading_artwork">Artwork wird geladen …</string>
+    <string name="change_color">Farbe ändern</string>
+    <string name="categories">Kategorien</string>
+    
+</resources>

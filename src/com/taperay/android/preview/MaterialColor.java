@@ -26,5 +26,4 @@ public class MaterialColor extends ServerObject {
 	public Byte getBlue() {
 		return b;
 	}
-
 }

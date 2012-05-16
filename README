@@ -1,0 +1,25 @@
+TapeRayAndroid is a small android application that acts as a webclient
+to the undocumented TapeRay XML API for getting access to the categories
+and artworks of the TapeRay content pool.
+
+The appliction does not store any information locally but retrieves everything
+from the TapeRay application server. Hence, there is no need for cache file
+housekeeping or any other magic.
+
+The selection code is simply a straight-forward list view that is filled with
+data received by XML documents.
+
+The preview activity is the only really interesting part as it overlays a live
+camera image with a ImageView displaying a alpha-channel enabled image.
+
+The code for TouchImageView was written Michael Ortiz and Patrick Lackemacher,
+https://github.com/MikeOrtiz/TouchImageView
+
+
+TODO:
+
+ * implement search functionality
+ * implement list views for artists and tags
+ * add "info" button to preview's menu
+ * add cross-links from artwork to tags, artist and categories
+

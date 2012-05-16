@@ -6,7 +6,7 @@ import org.w3c.dom.NodeList;
 import android.util.Log;
 
 public class MaterialColor {
-	
+
 	String title;
 	byte r, g, b;
 
@@ -28,21 +28,21 @@ public class MaterialColor {
 				title = new String(property.getFirstChild().getNodeValue());
 		}
 	}
-	
-    public String getTitle() {
-    	return title;
-    }
-    
-    public Byte getRed() {
-    	return r;
-    }
 
-    public Byte getGreen() {
-    	return g;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public Byte getBlue() {
-    	return b;
-    }
+	public Byte getRed() {
+		return r;
+	}
+
+	public Byte getGreen() {
+		return g;
+	}
+
+	public Byte getBlue() {
+		return b;
+	}
 
 }

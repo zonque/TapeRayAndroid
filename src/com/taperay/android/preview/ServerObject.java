@@ -12,22 +12,22 @@ public class ServerObject {
 
 	protected void readFromNode(Node node) {
 		NodeList properties = node.getChildNodes();
-		
-        for (int j = 0; j < properties.getLength(); j++){
-            Node property = properties.item(j);
-            String propName = property.getNodeName();
-            String propValue = null;
-            
-            if (property.getFirstChild() != null)
-            	propValue = property.getFirstChild().getNodeValue();
-            
-            //Log.v(tag, "name " + propName + " value " + propValue);
-            
-            if (propName != null && propValue != null)
-            	propertyHash.put(propName, propValue);
-        }
+
+		for (int j = 0; j < properties.getLength(); j++){
+			Node property = properties.item(j);
+			String propName = property.getNodeName();
+			String propValue = null;
+
+			if (property.getFirstChild() != null)
+				propValue = property.getFirstChild().getNodeValue();
+
+			//Log.v(tag, "name " + propName + " value " + propValue);
+
+			if (propName != null && propValue != null)
+				propertyHash.put(propName, propValue);
+		}
 	}
-	
+
 	ServerObject() {
 		propertyHash = new HashMap<String, String>();
 	}

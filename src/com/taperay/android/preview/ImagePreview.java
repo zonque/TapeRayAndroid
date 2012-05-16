@@ -54,16 +54,16 @@ public class ImagePreview extends SurfaceView implements Callback {
 		List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
 		Camera.Size previewSize = previewSizes.get(0);
 		parameters.setPreviewSize(previewSize.width, previewSize.height);
-		
+
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 			parameters.set("orientation", "portrait");
 			camera.setDisplayOrientation(90);
 		}
-		
+
 		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			parameters.set("orientation", "landscape");
 		}
-	
+
 		camera.setParameters(parameters);
 		camera.startPreview();
 	}

@@ -32,7 +32,7 @@ public class Artwork extends ServerObject {
 		HttpGet request = new HttpGet();
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpResponse resp;
-		
+
 		try {
 			String imageURL = propertyHash.get("image_url");
 			request.setURI(new URI(imageURL));
@@ -50,63 +50,63 @@ public class Artwork extends ServerObject {
 			e.printStackTrace();
 			return;
 		}
-		
+
 		StatusLine status = resp.getStatusLine();
 		if (status.getStatusCode() != 200) {
-		    Log.d(tag, "HTTP error, invalid server status code: " + resp.getStatusLine());  
+			Log.d(tag, "HTTP error, invalid server status code: " + resp.getStatusLine());  
 		}
 
 		try {
 			BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(resp.getEntity());
 			InputStream is = bufferedHttpEntity.getContent();
-	        bitmap = BitmapFactory.decodeStream(is);
+			bitmap = BitmapFactory.decodeStream(is);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
 		}
 	}
-	
+
 	private void retrieve() {
 		Element root = restClient.get(propertyHash.get("id"));
 
-        NodeList items = root.getElementsByTagName("artwork");
-        Node artwork = items.item(0);
-        readFromNode(artwork);
-     }
-	
+		NodeList items = root.getElementsByTagName("artwork");
+		Node artwork = items.item(0);
+		readFromNode(artwork);
+	}
+
 	Artwork(String _name) {
 		name = _name;
 		bitmap = null;
-//		retrieve();
+		//		retrieve();
 	}
-	
+
 	public Artwork(Node node) {
 		restClient = new RestClient("artworks");
 		bitmap = null;
 		readFromNode(node);
 		Log.v("title", "XXX:: " + propertyHash.get("title"));
-//		retrieve();
+		//		retrieve();
 	}
 
 	public String getTitle() {
 		return propertyHash.get("title");
 	}
-	
+
 	public Bitmap getImageBitmap() {
 		if (bitmap == null)
 			retrieveBitmap();
-		
+
 		return bitmap;
 	}
 
 	public void setBitmapColor(MaterialColor color) {
 		if (bitmap == null)
 			return;
-		
+
 		int size = bitmap.getHeight() * bitmap.getRowBytes();
-	    ByteBuffer buffer = ByteBuffer.allocate(size);
+		ByteBuffer buffer = ByteBuffer.allocate(size);
 		buffer.order(ByteOrder.nativeOrder());
-		
+
 		bitmap.copyPixelsToBuffer(buffer);
 		byte[] array = buffer.array();
 
@@ -122,10 +122,10 @@ public class Artwork extends ServerObject {
 		}
 
 		buffer.rewind();
-	    bitmap.copyPixelsFromBuffer(buffer);
-	    bitmap.prepareToDraw();
+		bitmap.copyPixelsFromBuffer(buffer);
+		bitmap.prepareToDraw();
 	}
-	
+
 	public String getURL() {
 		return propertyHash.get("url");
 	}

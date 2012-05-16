@@ -167,7 +167,7 @@ public class TouchImageView extends ImageView {
 						}
 					}
 				}
-				*/
+				 */
 			} else {
 				matrix.postScale(mScaleFactor, mScaleFactor, detector.getFocusX(), detector.getFocusY());
 				/*
@@ -184,7 +184,7 @@ public class TouchImageView extends ImageView {
 					else if (y > 0)
 						matrix.postTranslate(0, -y);
 				}
-				*/
+				 */
 			}
 			return true;
 

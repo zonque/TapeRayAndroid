@@ -20,78 +20,78 @@ public class ShowPreviewActivity extends Activity {
 	private ContentManager contentManager;
 	private Artwork artwork;
 	private TouchImageView imageView;
-	
+
 	void reloadImage() {
-        final ProgressDialog dialog = ProgressDialog.show(this, "", 
-                "Loading artwork, please wait...", true);
+		final ProgressDialog dialog = ProgressDialog.show(this, "", 
+				"Loading artwork, please wait...", true);
 
-        new Thread(new Runnable() {
-        	public void run() {
-        		final Bitmap b = artwork.getImageBitmap();
-        		artwork.setBitmapColor(contentManager.getCurrentColor());
-        		
-        		imageView.post(new Runnable() {
-        			public void run() {
-        				imageView.setImageBitmap(b);
-            	        dialog.dismiss();
-        			}
-        		});
-        	}
-        }).start();
+		new Thread(new Runnable() {
+			public void run() {
+				final Bitmap b = artwork.getImageBitmap();
+				artwork.setBitmapColor(contentManager.getCurrentColor());
+
+				imageView.post(new Runnable() {
+					public void run() {
+						imageView.setImageBitmap(b);
+						dialog.dismiss();
+					}
+				});
+			}
+		}).start();
 	}
-	
+
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.preview);
+		setContentView(R.layout.preview);
 
-    	TapeRayApplication app = (TapeRayApplication) getApplication();
-    	contentManager = app.getContentManager();
+		TapeRayApplication app = (TapeRayApplication) getApplication();
+		contentManager = app.getContentManager();
 
-        // add imagepreview
-        imagePreview = new ImagePreview(this);
-        ((FrameLayout) findViewById(R.id.preview)).addView(imagePreview);
+		// add imagepreview
+		imagePreview = new ImagePreview(this);
+		((FrameLayout) findViewById(R.id.preview)).addView(imagePreview);
 
-        // add touch controller
-        imageView = new TouchImageView(this, null);
-        ((FrameLayout) findViewById(R.id.preview)).addView(imageView);
-        
-        final Button button = (Button) findViewById(R.id.order_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(artwork.getURL()));
-                startActivity(browserIntent);
-            }
-        });
+		// add touch controller
+		imageView = new TouchImageView(this, null);
+		((FrameLayout) findViewById(R.id.preview)).addView(imageView);
 
-        artwork = contentManager.getCurrentArtwork();
-        setTitle(artwork.getTitle());
+		final Button button = (Button) findViewById(R.id.order_button);
+		button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(artwork.getURL()));
+				startActivity(browserIntent);
+			}
+		});
 
-        reloadImage();
-    }
-	
+		artwork = contentManager.getCurrentArtwork();
+		setTitle(artwork.getTitle());
+
+		reloadImage();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.preview_menu, menu);
-	    
-	    return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.preview_menu, menu);
+
+		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.change_color:
-	        	Intent i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
-				startActivity(i);
-	        	return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
+		// Handle item selection
+		switch (item.getItemId()) {
+		case R.id.change_color:
+			Intent i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
+			startActivity(i);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();

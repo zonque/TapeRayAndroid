@@ -20,10 +20,6 @@ public class Category extends ServerObject {
 
 	}
 
-	String getTitle() {
-		return propertyHash.get("title_de");
-	}
-
 	ArrayList<Artwork> getArtworks() {
 		ArrayList<Artwork> artworks = new ArrayList<Artwork>();
 

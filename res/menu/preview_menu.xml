@@ -4,6 +4,9 @@
     
     <item android:id="@+id/change_color"
           android:icon="@android:drawable/ic_menu_preferences"
-          android:title="Change color" />
-
+          android:title="@string/change_color" />
+    
+    <item android:id="@+id/visit_website"
+          android:icon="@android:drawable/ic_menu_mark"
+          android:title="@string/order_artwork" />
 </menu>

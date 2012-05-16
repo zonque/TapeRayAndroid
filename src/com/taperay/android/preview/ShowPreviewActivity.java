@@ -66,14 +66,6 @@ public class ShowPreviewActivity extends Activity {
 		imageView = new TouchImageView(this, null);
 		((FrameLayout) findViewById(R.id.preview)).addView(imageView);
 
-		final Button button = (Button) findViewById(R.id.order_button);
-		button.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(artwork.getURL()));
-				startActivity(browserIntent);
-			}
-		});
-
 		artwork = contentManager.getCurrentArtwork();
 		setTitle(artwork.getTitle());
 
@@ -89,10 +81,16 @@ public class ShowPreviewActivity extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent i;
+		
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.change_color:
-			Intent i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
+			i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
+			startActivity(i);
+			return true;
+		case R.id.visit_website:
+			i = new Intent(Intent.ACTION_VIEW, Uri.parse(artwork.getURL()));
 			startActivity(i);
 			return true;
 		default:

@@ -28,6 +28,15 @@ public class ServerObject {
 		}
 	}
 
+	String getTitle() {
+		String locale = java.util.Locale.getDefault().getDisplayLanguage();
+
+		if (locale.equals("Deutsch"))
+			return propertyHash.get("title_de");
+
+		return propertyHash.get("title_en");
+	}
+
 	ServerObject() {
 		propertyHash = new HashMap<String, String>();
 	}

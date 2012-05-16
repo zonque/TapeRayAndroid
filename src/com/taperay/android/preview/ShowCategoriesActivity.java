@@ -1,8 +1,11 @@
 package com.taperay.android.preview;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.taperay.android.preview.R;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +16,7 @@ import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.view.View;
 
-public class ShowCategoriesActivity extends Activity {
+public class ShowCategoriesActivity extends TapeRayActivity {
 	private static ContentManager contentManager;
 	private String[] categoryTitles;
 
@@ -37,7 +40,13 @@ public class ShowCategoriesActivity extends Activity {
 					public void run() {
 						TapeRayApplication app = (TapeRayApplication) getApplication();
 						ContentManager contentManager = app.getContentManager();
-						contentManager.selectCategory(index);
+						
+						try {
+							contentManager.selectCategory(index);
+						} catch (Exception e) {
+							displayNetworkErrorAndFinish();
+						}
+						
 						Intent i = new Intent(ShowCategoriesActivity.this, ShowArtworksActivity.class);
 						dialog.dismiss();
 						startActivity(i);
@@ -61,7 +70,7 @@ public class ShowCategoriesActivity extends Activity {
 
 		setContentView(R.layout.categories);
 		setTitle("TapeRay > " + getResources().getString(R.string.categories));
-
+		
 		final ProgressDialog dialog =
 				ProgressDialog.show(this,
 						getResources().getString(R.string.progress_dialog_header), 
@@ -72,7 +81,13 @@ public class ShowCategoriesActivity extends Activity {
 			public void run() {
 				TapeRayApplication app = (TapeRayApplication) getApplication();
 				contentManager = app.getContentManager();
-				contentManager.loadData();
+				try {
+					contentManager.loadData();
+				} catch (Exception e) {
+					displayNetworkErrorAndFinish();
+					return;
+				}
+
 				categoryTitles = contentManager.getCategoryTitles();
 				dialog.dismiss();
 				displayCategories();

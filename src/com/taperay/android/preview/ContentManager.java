@@ -1,9 +1,11 @@
 package com.taperay.android.preview;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -17,7 +19,7 @@ public class ContentManager {
 	private String currentTitle;
 	private MaterialColor currentColor;
 
-	private void retrieveCategories() {
+	private void retrieveCategories() throws ClientProtocolException, IOException {
 		RestClient restClient = new RestClient("categories");
 		Element root = restClient.index();
 		NodeList items = root.getElementsByTagName("category");
@@ -28,7 +30,7 @@ public class ContentManager {
 		}
 	}
 
-	private void retrieveMaterialColors() {
+	private void retrieveMaterialColors() throws ClientProtocolException, IOException {
 		RestClient restClient = new RestClient("material_colors");
 		Element root = restClient.index();
 		NodeList items = root.getElementsByTagName("material_color");
@@ -53,7 +55,7 @@ public class ContentManager {
 		return currentArtwork;
 	}
 
-	public void loadData() {
+	public void loadData() throws ClientProtocolException, IOException {
 		retrieveCategories();
 		retrieveMaterialColors();		
 	}
@@ -94,7 +96,7 @@ public class ContentManager {
 		return list;
 	}
 
-	public void selectCategory(int index) {
+	public void selectCategory(int index) throws ClientProtocolException, IOException {
 		Category c = categories.get(index);
 		currentArtworks = c.getArtworks();
 		currentArtwork = null;

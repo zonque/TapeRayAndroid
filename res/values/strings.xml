@@ -9,5 +9,7 @@
     <string name="loading_artwork">Loading artwork, please wait …</string>
     <string name="change_color">Change color</string>
 	<string name="categories">Categories</string>
-    
+	<string name="network_error_title">Network Error</string>
+	<string name="network_error_message">Unable to load data from server.</string>
+	
 </resources>

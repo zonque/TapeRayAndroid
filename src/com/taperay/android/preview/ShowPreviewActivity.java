@@ -1,5 +1,9 @@
 package com.taperay.android.preview;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import com.taperay.android.preview.R;
 
 import android.app.Activity;
@@ -14,7 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-public class ShowPreviewActivity extends Activity {
+public class ShowPreviewActivity extends TapeRayActivity {
 	private static ImagePreview imagePreview;
 	private ContentManager contentManager;
 	private Artwork artwork;
@@ -39,7 +43,12 @@ public class ShowPreviewActivity extends Activity {
 
 		new Thread(new Runnable() {
 			public void run() {
-				bitmap = artwork.getImageBitmap();
+				try {
+					bitmap = artwork.getImageBitmap();
+				} catch (Exception e) {
+					displayNetworkErrorAndFinish();
+					return;
+				}
 				artwork.setBitmapColor(contentManager.getCurrentColor());
 
 				imageView.post(new Runnable() {

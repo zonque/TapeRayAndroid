@@ -1,7 +1,9 @@
 package com.taperay.android.preview;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.http.client.ClientProtocolException;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -20,7 +22,7 @@ public class Category extends ServerObject {
 
 	}
 
-	ArrayList<Artwork> getArtworks() {
+	ArrayList<Artwork> getArtworks() throws ClientProtocolException, IOException {
 		ArrayList<Artwork> artworks = new ArrayList<Artwork>();
 
 		Element root = restClient.get(propertyHash.get("id"));

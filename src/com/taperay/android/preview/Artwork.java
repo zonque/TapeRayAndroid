@@ -28,7 +28,7 @@ public class Artwork extends ServerObject {
 
 	static final String tag = "Artwork";
 
-	private void retrieveBitmap() {
+	private void retrieveBitmap() throws ClientProtocolException, IOException {
 		HttpGet request = new HttpGet();
 		DefaultHttpClient client = new DefaultHttpClient();
 		HttpResponse resp;
@@ -41,15 +41,7 @@ public class Artwork extends ServerObject {
 			return;
 		}
 
-		try {
-			resp = client.execute(request);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
+		resp = client.execute(request);
 
 		StatusLine status = resp.getStatusLine();
 		if (status.getStatusCode() != 200) {
@@ -86,7 +78,6 @@ public class Artwork extends ServerObject {
 		restClient = new RestClient("artworks");
 		bitmap = null;
 		readFromNode(node);
-		Log.v("title", "XXX:: " + propertyHash.get("title"));
 		//		retrieve();
 	}
 
@@ -94,7 +85,7 @@ public class Artwork extends ServerObject {
 		return propertyHash.get("title");
 	}
 
-	public Bitmap getImageBitmap() {
+	public Bitmap getImageBitmap() throws ClientProtocolException, IOException {
 		if (bitmap == null)
 			retrieveBitmap();
 

@@ -34,11 +34,11 @@ public class RestClient {
 		request = new HttpGet();
 	}
 
-	public Element index() {
+	public Element index() throws ClientProtocolException, IOException {
 		return get(null);
 	}
 
-	public Element get(String id) {
+	public Element get(String id) throws ClientProtocolException, IOException {
 		try {
 			String fetch_name = name;
 
@@ -51,15 +51,7 @@ public class RestClient {
 			e.printStackTrace();
 		}
 
-		try {
-			resp = client.execute(request);
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+		resp = client.execute(request);
 
 		StatusLine status = resp.getStatusLine();
 		if (status.getStatusCode() != 200) {

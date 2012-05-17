@@ -14,7 +14,7 @@ public class TapeRayApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		singleton = this;
-		contentManager = new ContentManager();
+		contentManager = new ContentManager(this);
 	}
 
 	public ContentManager getContentManager() {

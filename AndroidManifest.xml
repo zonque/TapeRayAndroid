@@ -21,12 +21,34 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                   android:value=".ShowArtworksActivity" />
         </activity>
-
-        <activity android:name=".ShowArtworksActivity" />
-        <activity android:name=".ShowPreviewActivity" />
-        <activity android:name=".ShowColorsActivity" />
         
+
+		<activity android:name=".ShowArtworksActivity">
+		    <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            
+		    <meta-data android:name="android.app.default_searchable"
+                   android:value=".ShowArtworksActivity" />
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />		    
+		</activity>
+
+        <activity android:name=".ShowPreviewActivity">
+        	<meta-data android:name="android.app.default_searchable"
+                   android:value=".ShowArtworksActivity" />
+		</activity>
+    
+        <activity android:name=".ShowColorsActivity">
+		    <meta-data android:name="android.app.default_searchable"
+                   android:value=".ShowArtworksActivity" />
+		</activity>
+
 	</application>
 
 </manifest>

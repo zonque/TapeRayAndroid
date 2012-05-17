@@ -9,6 +9,8 @@ import org.apache.http.client.ClientProtocolException;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import android.content.Context;
+
 public class ContentManager {
 	static final String tag = "ContentManager";
 
@@ -18,7 +20,16 @@ public class ContentManager {
 	private ArrayList<Artwork> currentArtworks;
 	private String currentTitle;
 	private MaterialColor currentColor;
+	private Context context;
 
+	ContentManager(Context _context) {
+		categories = new ArrayList<Category>();
+		materialColors = new ArrayList<MaterialColor>();
+		currentArtwork = null;
+		currentArtworks = new ArrayList<Artwork>();
+		context = _context;
+	}
+	
 	private void retrieveCategories() throws ClientProtocolException, IOException {
 		RestClient restClient = new RestClient("categories");
 		Element root = restClient.index();
@@ -115,13 +126,24 @@ public class ContentManager {
 		return currentTitle;
 	}
 
-	ContentManager() {
-		categories = new ArrayList<Category>();
-		materialColors = new ArrayList<MaterialColor>();
-		currentArtwork = null;
-	}
-
 	public MaterialColor getCurrentColor() {
 		return currentColor;
+	}
+
+	public void performSearch(String query) throws ClientProtocolException, IOException {
+		RestClient restClient = new RestClient("search");
+		restClient.setQuery("q", query);
+		Element root = restClient.index();
+		NodeList items = root.getElementsByTagName("artwork");
+		
+		currentArtworks.clear();
+
+		for (int i = 0; i < items.getLength(); i++) {
+			Artwork a = new Artwork(items.item(i));
+			currentArtworks.add(a);
+		}
+		
+		String s = context.getResources().getString(R.string.search_results_for);
+		currentTitle = "TapeRay > " + s + " \"" + query + "\"";
 	}
 }

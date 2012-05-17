@@ -3,16 +3,21 @@ package com.taperay.android.preview;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -27,6 +32,7 @@ public class RestClient {
 	private DefaultHttpClient client;
 	private HttpGet request;
 	private HttpResponse resp;
+	private String queryParam;
 
 	RestClient(String _name) {
 		name = _name;
@@ -45,8 +51,17 @@ public class RestClient {
 			if (id != null)
 				fetch_name += "/" + id;
 
-			request.setURI(new URI(baseURI + fetch_name + ".xml"));
-			Log.v("XXX", "GET " + baseURI + fetch_name + ".xml");
+			List<NameValuePair> params = new LinkedList<NameValuePair>();
+			String url = baseURI + fetch_name + ".xml";
+			
+			if (queryParam != null) {
+				params.add(new BasicNameValuePair("q", queryParam));
+				url += "?";
+				url += URLEncodedUtils.format(params, "utf-8");
+			}
+
+			request.setURI(new URI(url));
+			Log.v("XXX", "GET " + url);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -84,5 +99,9 @@ public class RestClient {
 		}
 
 		return xmlDoc.getDocumentElement();		
+	}
+
+	public void setQuery(String string, String query) {
+		queryParam = query;		
 	}
 }

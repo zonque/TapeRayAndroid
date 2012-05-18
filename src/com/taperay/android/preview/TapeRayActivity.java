@@ -67,6 +67,11 @@ public class TapeRayActivity extends Activity {
             alert.show();
 
 			return true;
+
+		case R.id.search:
+			onSearchRequested();
+			return true;
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}

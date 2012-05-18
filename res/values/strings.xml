@@ -12,6 +12,7 @@
 	<string name="categories">Categories</string>
 	<string name="network_error_title">Network Error</string>
 	<string name="network_error_message">Unable to load data from server.</string>
+	<string name="search">Search</string>
 	<string name="search_hint">Search for artworks …</string>
 	<string name="search_results_for">Search results for </string>
 	<string name="about_taperay_message">

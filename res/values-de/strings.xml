@@ -12,6 +12,7 @@
     <string name="categories">Kategorien</string>
     <string name="network_error_title">Netzwerkfehler</string>
     <string name="network_error_message">Daten konnten nicht geladen werden.</string>
+    <string name="search">Suchen</string>
     <string name="search_hint">Artworks suchen</string>
     <string name="search_results_for">Suchergegnisse für </string>
     <string name="about_taperay_message">

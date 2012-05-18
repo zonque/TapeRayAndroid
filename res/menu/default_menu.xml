@@ -5,4 +5,9 @@
     <item android:id="@+id/about_taperay"
           android:icon="@android:drawable/ic_menu_info_details"
           android:title="@string/about_taperay" />
+    
+    <item android:id="@+id/search"
+          android:icon="@android:drawable/ic_menu_search"
+          android:title="@string/search" />
+
 </menu>

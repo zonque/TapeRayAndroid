@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.format.DateFormat;
 import android.util.Log;
 
 public class Artwork extends ServerObject {
@@ -76,6 +77,7 @@ public class Artwork extends ServerObject {
 		restClient = new RestClient("artworks");
 		bitmap = null;
 		readFromNode(node);
+		
 		//		retrieve();
 	}
 
@@ -119,5 +121,26 @@ public class Artwork extends ServerObject {
 
 	public String getURL() {
 		return propertyHash.get("url");
+	}
+
+	public String getMinSize() {
+		return propertyHash.get("min_width") + "cm x " +
+				propertyHash.get("min_height") + "cm";
+	}
+	
+	public String getArtistName() {
+		return propertyHash.get("artist_name");
+	}
+
+	public CharSequence getPublishedOn() {
+		return propertyHash.get("published_at");
+	}
+
+	public String getPrice() {
+		return String.format("%.2f €", Float.parseFloat(propertyHash.get("price")) / 100.0f);
+	}
+
+	public String getCategoryName() {
+		return propertyHash.get("category");
 	}
 }

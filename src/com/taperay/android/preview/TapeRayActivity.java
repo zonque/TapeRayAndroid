@@ -3,6 +3,7 @@ package com.taperay.android.preview;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
@@ -46,15 +47,15 @@ public class TapeRayActivity extends Activity {
 		switch (item.getItemId()) {
 		case R.id.about_taperay:
 			final TextView message = new TextView(TapeRayActivity.this);
-			final SpannableString s = 
-				new SpannableString(getResources().getString(R.string.about_taperay_message));
-			Linkify.addLinks(s, Linkify.WEB_URLS);
-			message.setText(s);
-			message.setMovementMethod(LinkMovementMethod.getInstance());
+			final String s = getResources().getString(R.string.about_taperay_message);
 			
+			message.setText(Html.fromHtml(s), TextView.BufferType.SPANNABLE);
+			message.setMovementMethod(LinkMovementMethod.getInstance());
+			message.setPadding(15, 10, 15, 10);
+
     		AlertDialog.Builder builder = new AlertDialog.Builder(TapeRayActivity.this);  
             builder.setTitle(getResources().getString(R.string.about_taperay));  
-            builder.setView(message);  
+            builder.setView(message);
             builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {  
                  @Override
                  public void onClick(DialogInterface dialog, int which) {  

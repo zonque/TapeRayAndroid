@@ -15,14 +15,28 @@
     <string name="search">Suchen</string>
     <string name="search_hint">Artworks suchen</string>
     <string name="search_results_for">Suchergegnisse für </string>
+    <string name="about_artwork">Über dieses Artwork</string>
     <string name="about_taperay_message">
-        TapeRay ist als Community für Kunstbegeisterte ins Leben gerufen worden, 
-        die als Format und Ausdrucksmittel für ihre Werke Vinylfolie verwenden.
-        Diese Art von Kunst wird auch WANDTATTOO genannt.
-        Diese Applikation ermöglicht es, die TapeRay-Artworks live in einem
-        Videobild anzuschauen und somit eine gute Vorstellung zu erhalten, wie
-        diese Werke in den eigenen vier Wänden wirken können.
-        Mehr Informationen finden sich auf unserer Webseite: http://taperay.com
-	</string>
+        <![CDATA[
+	        <p>TapeRay ist als Community für Kunstbegeisterte ins Leben gerufen worden, 
+    	    die als Format und Ausdrucksmittel für ihre Werke Vinylfolie verwenden.
+    	    Diese Art von Kunst wird auch WANDTATTOO genannt.</p>
+       		<p>Diese Applikation ermöglicht es, die TapeRay-Artworks live in einem
+        	Videobild anzuschauen und somit eine gute Vorstellung zu erhalten, wie
+        	diese Werke in den eigenen vier Wänden wirken können.</p>
+        	<p>Mehr Informationen über TapeRay und unsere Wandtattoos finden sich
+        	auf unserer Webseite:</p>
+        	<a href="http://taperay.com>http://taperay.com</a>
+        ]]>
+    </string>
+    <string name="artwork_info_template">
+        <![CDATA[
+        	<p>Titel: ##TITLE##</p>
+        	<p>Künstler: ##ARTIST##</p>
+        	<p>Datum: ##DATE##</p>
+        	<p>Mindestgrösse: ##MIN_SIZE##</p>
+        	<p>Künstlerpreis pro m²: ##PRICE##</p>
+        ]]>
+    </string>
     
 </resources>

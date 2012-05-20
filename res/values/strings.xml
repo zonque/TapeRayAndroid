@@ -15,15 +15,29 @@
 	<string name="search">Search</string>
 	<string name="search_hint">Search for artworks …</string>
 	<string name="search_results_for">Search results for </string>
+	<string name="about_this_artwork">About this artwork</string>
 	<string name="about_taperay_message">
-	    TapeRay was developed as a community for art-enthusiasts using vinyl
-	    foil as their expression media. This type of art is also widely known
-	    as WALL DECAL.
-     	This application is able to map all TapeRay artworks into a live
-        video image, recorded by the camera of your mobile phone.
-        You can resize the artworks with finger gestures and move them around
-        to get a feeling of how they might look like on the place where you want
-        them. Check out our website for more information: http://taperay.com
+	    <![CDATA[
+	    	<p>TapeRay was developed as a community for art-enthusiasts using vinyl
+	    	foil as their expression media. This type of art is also widely known
+	    	as WALL DECAL.</p>
+     		<p>This application is able to map all TapeRay artworks into a live
+        	video image, recorded by the camera of your mobile phone.
+        	You can resize the artworks with finger gestures and move them around
+        	to get a feeling of how they might look like on the place where you want
+        	them. </p>
+        	<p></p>Check out our website for more information: </p>
+        	<a href="http://taperay.com">http://taperay.com</a>
+        ]]>
+    </string>
+    <string name="artwork_info_template">
+        <![CDATA[
+        	<p>Title: ##TITLE##</p>
+        	<p>Artist: ##ARTIST##</p>
+        	<p>Created on: ##DATE##</p>
+        	<p>Minimal size: ##MIN_SIZE##</p>
+        	<p>Artist fee per m²: ##PRICE##</p>
+        ]]>
     </string>
 	
 </resources>

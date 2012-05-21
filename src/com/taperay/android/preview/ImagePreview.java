@@ -1,3 +1,7 @@
+/*
+ * Taken from https://github.com/pikanji/CameraPreviewSample/
+ */
+
 package com.taperay.android.preview;
 
 import java.io.IOException;
@@ -19,9 +23,7 @@ import android.widget.Toast;
 public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback {
 	private static boolean DEBUGGING = true;
 	private static final String LOG_TAG = "CameraPreviewSample";
-	private static final String CAMERA_PARAM_ORIENTATION = "orientation";
-	private static final String CAMERA_PARAM_LANDSCAPE = "landscape";
-	private static final String CAMERA_PARAM_PORTRAIT = "portrait";
+
 	protected Activity mActivity;
 	private SurfaceHolder mHolder;
 	protected Camera mCamera;

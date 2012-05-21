@@ -16,7 +16,8 @@
 	<string name="search_hint">Search for artworks …</string>
 	<string name="search_results_for">Search results for </string>
 	<string name="about_this_artwork">About this artwork</string>
-	<string name="save_image">Save image</string>
+	<string name="take_photo">Take photo</string>
+	<string name="photo_taken">Photo taken</string>
 	<string name="about_taperay_message">
 	    <![CDATA[
 	    	<p>TapeRay was developed as a community for art-enthusiasts using vinyl

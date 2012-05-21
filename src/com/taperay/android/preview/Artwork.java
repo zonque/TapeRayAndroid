@@ -17,7 +17,6 @@ import org.w3c.dom.Node;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.format.DateFormat;
 import android.util.Log;
 
 public class Artwork extends ServerObject {

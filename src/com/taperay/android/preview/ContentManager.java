@@ -1,6 +1,11 @@
 package com.taperay.android.preview;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +15,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 
 public class ContentManager {
 	static final String tag = "ContentManager";
@@ -145,5 +155,46 @@ public class ContentManager {
 		
 		String s = context.getResources().getString(R.string.search_results_for);
 		currentTitle = "TapeRay > " + s + " \"" + query + "\"";
+	}
+	
+	public boolean savePhoto(Bitmap finalBitmap, Artwork a, Context context) {
+		String extr = Environment.getExternalStorageDirectory().toString();
+		extr += "/TapeRayPhotos";
+		
+		File dir = new File(extr);
+		dir.mkdirs();
+		
+		String fname = a.getTitle() + "-" + System.currentTimeMillis() + ".jpg";
+		String encodedString;
+		
+		try {
+			encodedString = URLEncoder.encode(fname, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			e1.printStackTrace();
+			return false;
+		}
+		
+		File myPath = new File(extr, encodedString);
+		FileOutputStream fos = null;
+		try {
+			fos = new FileOutputStream(myPath);
+			finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+			fos.flush();
+			fos.close();
+			MediaStore.Images.Media.insertImage(context.getContentResolver(), finalBitmap, a.getTitle(), "");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		Intent intent = new Intent();
+		intent.setAction(Intent.ACTION_VIEW);
+		intent.setDataAndType(Uri.parse("file://" + myPath.getAbsolutePath()), "image/*");
+		context.startActivity(intent);
+		
+		return true;
 	}
 }

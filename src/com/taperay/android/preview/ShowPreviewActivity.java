@@ -121,7 +121,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 			message.setPadding(15, 10, 15, 10);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ShowPreviewActivity.this);  
-			builder.setTitle(getResources().getString(R.string.about_taperay));  
+			builder.setTitle(getResources().getString(R.string.about_this_artwork));  
 			builder.setView(message);
 			builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {  
 				@Override

@@ -42,6 +42,7 @@ public class TouchImageView extends ImageView {
 	static final int CLICK = 3;
 	float saveScale = 1f;
 	float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
+	int rotation;
 
 	ScaleGestureDetector mScaleDetector;
 

@@ -14,7 +14,6 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -226,7 +225,7 @@ public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback 
 	}
 
 	protected boolean adjustSurfaceLayoutSize(Camera.Size previewSize, boolean portrait,
-			int availableWidth, int availableHeight) {
+												int availableWidth, int availableHeight) {
 		float tmpLayoutHeight, tmpLayoutWidth;
 		if (portrait) {
 			tmpLayoutHeight = previewSize.width;
@@ -289,36 +288,36 @@ public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback 
 		mCenterPosY = y;
 	}
 
-	protected void configureCameraParameters(Camera.Parameters cameraParams, boolean portrait) {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.FROYO) { // for 2.1 and before
-			if (portrait) {
-				cameraParams.set(CAMERA_PARAM_ORIENTATION, CAMERA_PARAM_PORTRAIT);
-			} else {
-				cameraParams.set(CAMERA_PARAM_ORIENTATION, CAMERA_PARAM_LANDSCAPE);
-			}
-		} else { // for 2.2 and later
-			int angle;
-			Display display = mActivity.getWindowManager().getDefaultDisplay();
-			switch (display.getRotation()) {
-			case Surface.ROTATION_0: // This is display orientation
-				angle = 90; // This is camera orientation
-				break;
-			case Surface.ROTATION_90:
-				angle = 0;
-				break;
-			case Surface.ROTATION_180:
-				angle = 270;
-				break;
-			case Surface.ROTATION_270:
-				angle = 180;
-				break;
-			default:
-				angle = 90;
-				break;
-			}
-			Log.v(LOG_TAG, "angle: " + angle);
-			mCamera.setDisplayOrientation(angle);
+	public int getCameraOrientation() {
+		int angle;
+		Display display = mActivity.getWindowManager().getDefaultDisplay();
+
+		switch (display.getRotation()) {
+		case Surface.ROTATION_0: // This is display orientation
+			angle = 90; // This is camera orientation
+			break;
+		case Surface.ROTATION_90:
+			angle = 0;
+			break;
+		case Surface.ROTATION_180:
+			angle = 270;
+			break;
+		case Surface.ROTATION_270:
+			angle = 180;
+			break;
+		default:
+			angle = 90;
+			break;
 		}
+		
+		return angle;
+	}
+	
+	protected void configureCameraParameters(Camera.Parameters cameraParams, boolean portrait) {
+
+		int angle = getCameraOrientation();
+		Log.v(LOG_TAG, "angle: " + angle);
+		mCamera.setDisplayOrientation(angle);
 
 		cameraParams.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		cameraParams.setPictureSize(mPictureSize.width, mPictureSize.height);
@@ -371,47 +370,3 @@ public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback 
 	}
 
 }
-
-
-/*
-/*
-public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-	// Now that the size is known, set up the camera parameters and begin
-	// the preview.
-	Camera.Parameters parameters = camera.getParameters();
-	List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
-	Camera.Size previewSize = previewSizes.get(0);
-	parameters.setPreviewSize(previewSize.width, previewSize.height);
-
-	float cameraRatio = (float) previewSize.width / (float) previewSize.height;
-
-	if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-		parameters.set("orientation", "portrait");
-		cameraRatio = (float) previewSize.height / (float) previewSize.width;
-		camera.setDisplayOrientation(90);
-	}
-
-	if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-		parameters.set("orientation", "landscape");
-	}
-
-	float viewRatio = (float) getMeasuredWidth() / (float) getMeasuredHeight();
-
-	Log.v("XXX", "CAM RATIO " + cameraRatio + " VIEW RATIO " + viewRatio + " / " + previewSize.width + "x" + previewSize.height + " -- " + getMeasuredWidth() + "x" + getMeasuredHeight());
-
-	if (cameraRatio > viewRatio) {
-		int padding = getMeasuredHeight() - previewSize.height;
-		setPadding(0, padding / 2, 0, padding / 2);
-	} else {
-		int padding = getMeasuredWidth() - previewSize.width;
-		setPadding(padding / 2, 0, padding / 2, 0);
-	}
-
-	setPadding(20, 20, 20, 20);
-	requestLayout();
-
-
-	camera.setParameters(parameters);
-	camera.startPreview();
-}
- */

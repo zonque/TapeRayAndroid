@@ -9,6 +9,7 @@ import com.taperay.android.preview.R;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,6 +21,8 @@ import android.graphics.Matrix;
 import android.graphics.Picture;
 import android.graphics.Point;
 import android.hardware.Camera.PictureCallback;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,6 +51,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 	private ProgressDialog dialog;
 	private Bitmap bitmap;
 	private FrameLayout layout;
+	private MediaPlayer mediaPlayer;
 
 	void loadImage() {
 		if (dialog != null) {
@@ -100,7 +104,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		contentManager = app.getContentManager();
 
 		layout = new FrameLayout(this);
-		setContentView(layout);
+		setContentView(layout);		
 	}
 
 	@Override
@@ -161,56 +165,55 @@ public class ShowPreviewActivity extends TapeRayActivity {
 				public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
 					
 					Log.v("XXX", "BYTES " + data.length);
+					//shootSound();
 					
 					BitmapFactory.Options options=new BitmapFactory.Options();
 					options.inSampleSize = 8;
 
 					Bitmap videoBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
 
-					int degrees = 0;
-					switch (getWindowManager().getDefaultDisplay().getRotation()) {
-					case Surface.ROTATION_0: degrees = 0; break;
-					case Surface.ROTATION_90: degrees = 90; break;
-					case Surface.ROTATION_180: degrees = 180; break;
-					case Surface.ROTATION_270: degrees = 270; break;
-					}
-
-					int rotation;
-					android.hardware.Camera.CameraInfo info =
-							new android.hardware.Camera.CameraInfo();
-					android.hardware.Camera.getCameraInfo(0, info);
-
-					if (info.facing == android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT) {
-						rotation = (info.orientation + degrees) % 360;
-						rotation = (360 - rotation) % 360;  // compensate the mirror
-					} else {  // back-facing
-						rotation = (info.orientation - degrees + 360) % 360;
-					}
+					int rotation = imagePreview.getCameraOrientation();
 
 					imageView.setDrawingCacheEnabled(true);
 					Bitmap rootBitmap = imageView.getDrawingCache();
 					
 					//videoBitmap.recycle();
-					
+					Matrix mtx = new Matrix();
+
 					int w, h;
-					if (rotation % 180 == 0) {
+					
+					switch (rotation) {
+					case 0:
 						h = videoBitmap.getHeight();
 						w = videoBitmap.getWidth();
-					} else {
+						break;
+					case 90:
 						w = videoBitmap.getHeight();
 						h = videoBitmap.getWidth();
+						mtx.setTranslate(w, 0);
+						mtx.preRotate(90);
+						break;
+					case 180:
+						h = videoBitmap.getHeight();
+						w = videoBitmap.getWidth();
+						mtx.setTranslate(w, h);
+						mtx.preRotate(180);
+						break;
+					case 270:
+						w = videoBitmap.getHeight();
+						h = videoBitmap.getWidth();
+						break;
+					default:
+						return;
 					}
 					
-					float factor = (float) w / getDisplayWidth();
+					float factorH = (float) h / imageView.getHeight();
+					float factorW = (float) w / imageView.getWidth();
 					
 					Bitmap finalBitmap = Bitmap.createBitmap(w, h, videoBitmap.getConfig());
 					Log.v("XXX", "ROTATION " + rotation + " video " + videoBitmap.getWidth() + "x" + videoBitmap.getHeight() + " --> " + w + "x" + h);
 					Canvas canvas = new Canvas(finalBitmap);
-					Matrix mtx = new Matrix();
-					mtx.setTranslate(w, 0);
-					mtx.preRotate(90.0f); //, videoBitmap.getWidth() / 2, videoBitmap.getHeight() / 2);
 					canvas.drawBitmap(videoBitmap, mtx, null);
-					
 					
 					mtx.reset();
 					//mtx.preConcat(imageView.getImageMatrix());
@@ -218,20 +221,11 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					float[] v = new float[9];
 					imageView.getImageMatrix().getValues(v);
 					//Log.v("XXX", "MATRIX: " + v[0] + " " + v[1] + " " + v[2] + " " + v[3] + " " + v[4] + " " + v[5] + " " + v[6] + " " + v[7] + " " + v[8]);
-					Log.v("XXX", "factor --> " + factor);
+					Log.v("XXX", "factor --> " + factorW + " -- " + factorH);
 					
-					mtx.setTranslate(factor * v[Matrix.MTRANS_X], factor * v[Matrix.MTRANS_Y]);
-					mtx.preScale(factor * v[Matrix.MSCALE_X], factor * v[Matrix.MSCALE_Y]);
+					mtx.setTranslate(factorW * v[Matrix.MTRANS_X], factorH * v[Matrix.MTRANS_Y]);
+					mtx.preScale(factorW * v[Matrix.MSCALE_X], factorH * v[Matrix.MSCALE_Y]);
 					canvas.drawBitmap(bitmap, mtx, null);
-//					canvas.rotate(rotation);
-
-					//canvas.save();
-
-					/*
-					ImageView view = new ImageView(ShowPreviewActivity.this);
-					view.setDrawingCacheEnabled(true);
-					view.draw(canvas);
-					*/
 					
 					String extr = Environment.getExternalStorageDirectory().toString();
 					File myPath = new File(extr, "blubb.jpg");
@@ -250,30 +244,20 @@ public class ShowPreviewActivity extends TapeRayActivity {
 						e.printStackTrace();
 					}
 
-					Log.d("xxx", "onPictureTaken - jpeg");
-					
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.setDataAndType(Uri.parse("file://" + myPath.getAbsolutePath()), "image/*");
 					startActivity(intent);
 
-					
-					//imagePreview.camera.startPreview();
+					imagePreview.mCamera.startPreview();
 				}
 		    };
 
-		    //imagePreview.camera.takePicture(null, null, takePictureCallback);
+		    imagePreview.mCamera.takePicture(null, null, takePictureCallback);
 		    return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-	
-	private float getDisplayWidth() {
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		return display.getWidth();
-		//return size.x;
 	}
 	
 	@Override
@@ -306,7 +290,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		layout.addView(imagePreview, 0, previewLayoutParams);
 
 		// add touch controller
-		imageView = new TouchImageView(this, null);
+		imageView = new TouchImageView(this);
 		layout.addView(imageView);
 		
         // Un-comment below lines to specify the size.

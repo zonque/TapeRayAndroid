@@ -14,4 +14,8 @@
           android:icon="@android:drawable/ic_menu_info_details"
           android:title="@string/about_this_artwork" />
     
+    <item android:id="@+id/save_image"
+          android:icon="@android:drawable/ic_menu_camera"
+          android:title="@string/save_image" />
+    
 </menu>

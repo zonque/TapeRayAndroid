@@ -50,6 +50,7 @@ public class TouchImageView extends ImageView {
 	public TouchImageView(Context context) {
 		super(context);
 		sharedConstructing(context);
+		setDrawingCacheEnabled(true);
 	}
 
 	public TouchImageView(Context context, AttributeSet attrs) {

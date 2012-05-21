@@ -61,7 +61,7 @@ public class RestClient {
 			}
 
 			request.setURI(new URI(url));
-			Log.v("XXX", "GET " + url);
+			Log.v(tag, "GET " + url);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}

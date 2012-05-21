@@ -20,7 +20,7 @@ import android.view.SurfaceView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 	private static boolean DEBUGGING = true;
 	private static final String LOG_TAG = "CameraPreviewSample";
 
@@ -54,7 +54,7 @@ public class ImagePreview extends SurfaceView implements SurfaceHolder.Callback 
 	 */
 	protected boolean mSurfaceConfiguring = false;
 
-	public ImagePreview(Activity activity, int cameraId, LayoutMode mode) {
+	public CameraPreview(Activity activity, int cameraId, LayoutMode mode) {
 		super(activity); // Always necessary
 		mActivity = activity;
 		mLayoutMode = mode;

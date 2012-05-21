@@ -24,7 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class ShowPreviewActivity extends TapeRayActivity {
-	private static ImagePreview imagePreview;
+	private static CameraPreview cameraPreview;
 	private ContentManager contentManager;
 	private Artwork artwork;
 	private TouchImageView imageView;
@@ -61,7 +61,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 
 				runOnUiThread(new Runnable() {
 					public void run() {
-						Log.v("XXX", "===> SET IMAGE!");
 						imageView.setImageBitmap(bitmap);
 					}
 				});
@@ -147,7 +146,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					options.inSampleSize = 8;
 					Bitmap videoBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
 
-					int rotation = imagePreview.getCameraOrientation();
+					int rotation = cameraPreview.getCameraOrientation();
 
 					Matrix mtx = new Matrix();
 
@@ -182,7 +181,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					float factorW = (float) w / imageView.getWidth();
 
 					Bitmap finalBitmap = Bitmap.createBitmap(w, h, videoBitmap.getConfig());
-					//Log.v("XXX", "ROTATION " + rotation + " video " + videoBitmap.getWidth() + "x" + videoBitmap.getHeight() + " --> " + w + "x" + h);
 					Canvas canvas = new Canvas(finalBitmap);
 					canvas.drawBitmap(videoBitmap, mtx, null);
 
@@ -196,7 +194,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					canvas.drawBitmap(bitmap, mtx, null);
 
 					contentManager.savePhoto(finalBitmap, artwork, ShowPreviewActivity.this);
-					imagePreview.mCamera.startPreview();
+					cameraPreview.mCamera.startPreview();
 
 					finalBitmap.recycle();
 					finalBitmap = null;
@@ -206,7 +204,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 				}
 			};
 
-			imagePreview.mCamera.takePicture(null, null, takePictureCallback);
+			cameraPreview.mCamera.takePicture(null, null, takePictureCallback);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -221,10 +219,10 @@ public class ShowPreviewActivity extends TapeRayActivity {
 			dialog = null;
 		}
 
-		imagePreview.stop();
+		cameraPreview.stop();
 
-		layout.removeView(imagePreview);
-		imagePreview = null;
+		layout.removeView(cameraPreview);
+		cameraPreview = null;
 
 		layout.removeView(imageView);
 		imageView = null;
@@ -238,9 +236,9 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		setTitle(artwork.getTitle());
 
 		// add imagepreview
-		imagePreview = new ImagePreview(this, 0, ImagePreview.LayoutMode.FitToParent);
+		cameraPreview = new CameraPreview(this, 0, CameraPreview.LayoutMode.FitToParent);
 		LayoutParams previewLayoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		layout.addView(imagePreview, 0, previewLayoutParams);
+		layout.addView(cameraPreview, 0, previewLayoutParams);
 
 		// add touch controller
 		imageView = new TouchImageView(this);

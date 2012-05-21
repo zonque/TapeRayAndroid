@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -164,20 +162,12 @@ public class ContentManager {
 		File dir = new File(extr);
 		dir.mkdirs();
 		
-		String fname = a.getTitle() + "-" + System.currentTimeMillis() + ".jpg";
-		String encodedString;
-		
-		try {
-			encodedString = URLEncoder.encode(fname, "UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-		
-		File myPath = new File(extr, encodedString);
+		String fname = System.currentTimeMillis() + ".jpg";
+
+		File path = new File(extr, fname);
 		FileOutputStream fos = null;
 		try {
-			fos = new FileOutputStream(myPath);
+			fos = new FileOutputStream(path);
 			finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 			fos.flush();
 			fos.close();
@@ -192,7 +182,7 @@ public class ContentManager {
 		
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_VIEW);
-		intent.setDataAndType(Uri.parse("file://" + myPath.getAbsolutePath()), "image/*");
+		intent.setDataAndType(Uri.parse("file://" + path.getAbsolutePath()), "image/*");
 		context.startActivity(intent);
 		
 		return true;

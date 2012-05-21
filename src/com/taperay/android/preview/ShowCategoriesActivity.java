@@ -15,6 +15,7 @@ import android.view.View;
 public class ShowCategoriesActivity extends TapeRayActivity {
 	private static ContentManager contentManager;
 	private String[] categoryTitles;
+	private ProgressDialog dialog;
 
 	private void displayCategories() {
 		final ListView listView = (ListView) findViewById(R.id.list);
@@ -25,8 +26,7 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				final ProgressDialog dialog =
-						ProgressDialog.show(ShowCategoriesActivity.this,
+				dialog = ProgressDialog.show(ShowCategoriesActivity.this,
 								getResources().getString(R.string.progress_dialog_header),
 								getResources().getString(R.string.loading_artworks),
 								true);
@@ -43,8 +43,10 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 							displayNetworkErrorAndFinish();
 						}
 						
+						if (dialog != null)
+							dialog.dismiss();
+
 						Intent i = new Intent(ShowCategoriesActivity.this, ShowArtworksActivity.class);
-						dialog.dismiss();
 						startActivity(i);
 					}
 				}).start();
@@ -67,8 +69,7 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 		setContentView(R.layout.categories);
 		setTitle("TapeRay > " + getResources().getString(R.string.categories));
 		
-		final ProgressDialog dialog =
-				ProgressDialog.show(this,
+		dialog = ProgressDialog.show(this,
 						getResources().getString(R.string.progress_dialog_header), 
 						getResources().getString(R.string.loading_data), 
 						true);
@@ -84,10 +85,22 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 					return;
 				}
 
-				categoryTitles = contentManager.getCategoryTitles();
-				dialog.dismiss();
-				displayCategories();
+				if (dialog != null) {
+					categoryTitles = contentManager.getCategoryTitles();
+					dialog.dismiss();
+					displayCategories();
+				}
 			}
 		}).start();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		if (dialog != null) {
+			dialog.dismiss();
+			dialog = null;
+		}
 	}
 }

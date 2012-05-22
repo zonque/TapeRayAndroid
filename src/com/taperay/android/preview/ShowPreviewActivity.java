@@ -9,7 +9,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.hardware.Camera.PictureCallback;
 import android.net.Uri;
 import android.os.Bundle;
@@ -143,13 +146,11 @@ public class ShowPreviewActivity extends TapeRayActivity {
 				public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
 
 					BitmapFactory.Options options=new BitmapFactory.Options();
-					options.inSampleSize = 8;
+					options.inSampleSize = 4;
 					Bitmap videoBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
 
-					int rotation = cameraPreview.getCameraOrientation();
-
 					Matrix mtx = new Matrix();
-
+					int rotation = cameraPreview.getCameraOrientation();
 					int w, h;
 
 					switch (rotation) {
@@ -184,15 +185,30 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					Canvas canvas = new Canvas(finalBitmap);
 					canvas.drawBitmap(videoBitmap, mtx, null);
 
-					mtx.reset();
-
+					// draw artwork image on top
 					float[] v = new float[9];
 					imageView.getImageMatrix().getValues(v);
 
+					mtx.reset();
 					mtx.setTranslate(factorW * v[Matrix.MTRANS_X], factorH * v[Matrix.MTRANS_Y]);
 					mtx.preScale(factorW * v[Matrix.MSCALE_X], factorH * v[Matrix.MSCALE_Y]);
 					canvas.drawBitmap(bitmap, mtx, null);
 
+					// header and footer
+					Paint paint = new Paint();
+					paint.setColor(Color.BLACK);
+					paint.setTypeface(Typeface.DEFAULT_BOLD);
+					paint.setAntiAlias(true);
+					canvas.drawRect(0, 0, w, 20, paint);
+					canvas.drawRect(0, h - 20, w, h, paint);
+					
+					paint.setColor(Color.WHITE);
+					paint.setTextSize(14);
+					String title = artwork.getTitle();
+					String url = artwork.getShortURL();
+					canvas.drawText(title, 0, title.length(), 2, 18, paint);
+					canvas.drawText(url, 0, url.length(), 2, h - 2, paint);
+					
 					contentManager.savePhoto(finalBitmap, artwork, ShowPreviewActivity.this);
 					cameraPreview.mCamera.startPreview();
 

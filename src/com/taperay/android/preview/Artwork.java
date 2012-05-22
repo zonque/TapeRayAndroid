@@ -122,6 +122,10 @@ public class Artwork extends ServerObject {
 		return propertyHash.get("url");
 	}
 
+	public String getShortURL() {
+		return propertyHash.get("short_url");
+	}
+
 	public String getMinSize() {
 		return propertyHash.get("min_width") + "cm x " +
 				propertyHash.get("min_height") + "cm";

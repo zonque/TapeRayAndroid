@@ -1,6 +1,8 @@
 package com.taperay.android.preview;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +19,25 @@ public class ShowArtworksActivity extends TapeRayActivity {
 	private void showArtworks() {
 		artworkTitles = contentManager.getArtworkTitles();
 		setTitle(contentManager.getCurrentTitle());
+		
+		if (artworkTitles.length == 0) {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					AlertDialog.Builder builder = new AlertDialog.Builder(ShowArtworksActivity.this);  
+					builder.setMessage(getResources().getString(R.string.no_results));  
+					builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {  
+						@Override
+						public void onClick(DialogInterface dialog, int which) {  
+							dialog.cancel();  
+							finish();
+						}  
+					});
+
+					AlertDialog alert = builder.create(); 
+					alert.show();
+				}
+			});
+		}
 		
 		final ListView listView = (ListView) findViewById(R.id.list);
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ShowArtworksActivity.this,

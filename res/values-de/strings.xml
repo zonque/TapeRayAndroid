@@ -14,10 +14,11 @@
     <string name="network_error_message">Daten konnten nicht geladen werden.</string>
     <string name="search">Suchen</string>
     <string name="search_hint">Artworks suchen</string>
-    <string name="search_results_for">Suchergegnisse für </string>
+    <string name="search_results_for">Suchergebnisse für </string>
     <string name="about_this_artwork">Über dieses Artwork</string>
     <string name="take_photo">Foto machen</string>
     <string name="photo_taken">Foto gespeichert</string>
+    <string name="no_results">Keine passenden Artworks gefunden</string>
     <string name="about_taperay_message">
         <![CDATA[
 	        <p>TapeRay ist als Community für Kunstbegeisterte ins Leben gerufen worden, 

@@ -70,13 +70,13 @@ public class Artwork extends ServerObject {
 		bitmap = null;
 		//		retrieve();
 	}
-	*/
+	 */
 
 	public Artwork(Node node) {
 		restClient = new RestClient("artworks");
 		bitmap = null;
 		readFromNode(node);
-		
+
 		//		retrieve();
 	}
 
@@ -130,7 +130,7 @@ public class Artwork extends ServerObject {
 		return propertyHash.get("min_width") + "cm x " +
 				propertyHash.get("min_height") + "cm";
 	}
-	
+
 	public String getArtistName() {
 		return propertyHash.get("artist_name");
 	}

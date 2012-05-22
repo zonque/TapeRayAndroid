@@ -201,14 +201,14 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					paint.setAntiAlias(true);
 					canvas.drawRect(0, 0, w, 20, paint);
 					canvas.drawRect(0, h - 20, w, h, paint);
-					
+
 					paint.setColor(Color.WHITE);
 					paint.setTextSize(14);
 					String title = artwork.getTitle();
 					String url = artwork.getShortURL();
 					canvas.drawText(title, 0, title.length(), 2, 18, paint);
 					canvas.drawText(url, 0, url.length(), 2, h - 2, paint);
-					
+
 					contentManager.savePhoto(finalBitmap, artwork, ShowPreviewActivity.this);
 					cameraPreview.mCamera.startPreview();
 

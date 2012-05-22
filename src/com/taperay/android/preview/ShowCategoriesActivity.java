@@ -27,22 +27,22 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				dialog = ProgressDialog.show(ShowCategoriesActivity.this,
-								getResources().getString(R.string.progress_dialog_header),
-								getResources().getString(R.string.loading_artworks),
-								true);
+						getResources().getString(R.string.progress_dialog_header),
+						getResources().getString(R.string.loading_artworks),
+						true);
 				final int index = position;
 
 				new Thread(new Runnable() {
 					public void run() {
 						TapeRayApplication app = (TapeRayApplication) getApplication();
 						ContentManager contentManager = app.getContentManager();
-						
+
 						try {
 							contentManager.selectCategory(index);
 						} catch (Exception e) {
 							displayNetworkErrorAndFinish();
 						}
-						
+
 						if (dialog != null)
 							dialog.dismiss();
 
@@ -68,11 +68,11 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 
 		setContentView(R.layout.categories);
 		setTitle("TapeRay > " + getResources().getString(R.string.categories));
-		
+
 		dialog = ProgressDialog.show(this,
-						getResources().getString(R.string.progress_dialog_header), 
-						getResources().getString(R.string.loading_data), 
-						true);
+				getResources().getString(R.string.progress_dialog_header), 
+				getResources().getString(R.string.loading_data), 
+				true);
 
 		new Thread(new Runnable() {
 			public void run() {
@@ -93,11 +93,11 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 			}
 		}).start();
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		if (dialog != null) {
 			dialog.dismiss();
 			dialog = null;

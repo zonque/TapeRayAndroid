@@ -8,7 +8,7 @@ public class MaterialColor extends ServerObject {
 
 	MaterialColor(Node node) {
 		readFromNode(node);
-		
+
 		String color = propertyHash.get("rgb_hex");
 		r = (byte) (Integer.parseInt(color.substring(0, 2), 16));
 		g = (byte) (Integer.parseInt(color.substring(2, 4), 16));

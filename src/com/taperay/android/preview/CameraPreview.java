@@ -227,7 +227,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	}
 
 	protected boolean adjustSurfaceLayoutSize(Camera.Size previewSize, boolean portrait,
-												int availableWidth, int availableHeight) {
+			int availableWidth, int availableHeight) {
 		float tmpLayoutHeight, tmpLayoutWidth;
 		if (portrait) {
 			tmpLayoutHeight = previewSize.width;
@@ -311,10 +311,10 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 			angle = 90;
 			break;
 		}
-		
+
 		return angle;
 	}
-	
+
 	protected void configureCameraParameters(Camera.Parameters cameraParams, boolean portrait) {
 
 		int angle = getCameraOrientation();

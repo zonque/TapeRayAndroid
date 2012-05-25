@@ -18,7 +18,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -43,7 +42,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 
 		if (bitmap != null) {
 			artwork.setBitmapColor(contentManager.getCurrentColor());
-			imageView.setImageBitmap(bitmap);
 			return;
 		}
 
@@ -55,7 +53,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		new Thread(new Runnable() {
 			public void run() {
 				try {
-					bitmap = artwork.getImageBitmap();
+					ShowPreviewActivity.this.bitmap = artwork.getImageBitmap();
 				} catch (Exception e) {
 					displayNetworkErrorAndFinish();
 					return;
@@ -64,7 +62,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 
 				runOnUiThread(new Runnable() {
 					public void run() {
-						imageView.setImageBitmap(bitmap);
+						imageView.setImageBitmap(bitmap, true);
 					}
 				});
 
@@ -85,7 +83,9 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		contentManager = app.getContentManager();
 
 		layout = new FrameLayout(this);
-		setContentView(layout);		
+		setContentView(layout);
+
+		imageView = new TouchImageView(this);
 	}
 
 	@Override
@@ -241,7 +241,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		cameraPreview = null;
 
 		layout.removeView(imageView);
-		imageView = null;
 	}
 
 	@Override
@@ -257,7 +256,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		layout.addView(cameraPreview, 0, previewLayoutParams);
 
 		// add touch controller
-		imageView = new TouchImageView(this);
 		layout.addView(imageView);
 
 		loadImage();

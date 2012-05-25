@@ -43,6 +43,7 @@ public class TouchImageView extends ImageView {
 	float saveScale = 1f;
 	float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
 	int rotation;
+	boolean measured;
 
 	ScaleGestureDetector mScaleDetector;
 
@@ -113,18 +114,14 @@ public class TouchImageView extends ImageView {
 		});
 	}
 
-	@Override
-	public void setImageBitmap(Bitmap bm) {
+	public void setImageBitmap(Bitmap bm, boolean initSize) {
 		super.setImageBitmap(bm);
-		if(bm != null) {
+
+		if(bm != null && initSize) {
 			bmWidth = bm.getWidth();
 			bmHeight = bm.getHeight();
+			measured = false;
 		}
-	}
-
-	public void setMaxZoom(float x)
-	{
-		maxScale = x;
 	}
 
 	private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
@@ -197,6 +194,10 @@ public class TouchImageView extends ImageView {
 	protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec)
 	{
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+		if (measured)
+			return;
+
 		width = MeasureSpec.getSize(widthMeasureSpec);
 		height = MeasureSpec.getSize(heightMeasureSpec);
 		//Fit to screen.
@@ -221,5 +222,6 @@ public class TouchImageView extends ImageView {
 		right = width * saveScale - width - (2 * redundantXSpace * saveScale);
 		bottom = height * saveScale - height - (2 * redundantYSpace * saveScale);
 		setImageMatrix(matrix);
+		measured = true;
 	}
 }

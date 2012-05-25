@@ -53,7 +53,7 @@ public class RestClient {
 
 			List<NameValuePair> params = new LinkedList<NameValuePair>();
 			String url = baseURI + fetch_name + ".xml";
-			
+
 			if (queryParam != null) {
 				params.add(new BasicNameValuePair("q", queryParam));
 				url += "?";

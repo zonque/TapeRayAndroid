@@ -37,7 +37,7 @@ public class ContentManager {
 		currentArtworks = new ArrayList<Artwork>();
 		context = _context;
 	}
-	
+
 	private void retrieveCategories() throws ClientProtocolException, IOException {
 		RestClient restClient = new RestClient("categories");
 		Element root = restClient.index();
@@ -143,25 +143,25 @@ public class ContentManager {
 		restClient.setQuery("q", query);
 		Element root = restClient.index();
 		NodeList items = root.getElementsByTagName("artwork");
-		
+
 		currentArtworks.clear();
 
 		for (int i = 0; i < items.getLength(); i++) {
 			Artwork a = new Artwork(items.item(i));
 			currentArtworks.add(a);
 		}
-		
+
 		String s = context.getResources().getString(R.string.search_results_for);
 		currentTitle = "TapeRay > " + s + " \"" + query + "\"";
 	}
-	
+
 	public boolean savePhoto(Bitmap finalBitmap, Artwork a, Context context) {
 		String extr = Environment.getExternalStorageDirectory().toString();
 		extr += "/TapeRayPhotos";
-		
+
 		File dir = new File(extr);
 		dir.mkdirs();
-		
+
 		String fname = System.currentTimeMillis() + ".jpg";
 
 		File path = new File(extr, fname);
@@ -179,12 +179,12 @@ public class ContentManager {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		Intent intent = new Intent();
 		intent.setAction(Intent.ACTION_VIEW);
 		intent.setDataAndType(Uri.parse("file://" + path.getAbsolutePath()), "image/*");
 		context.startActivity(intent);
-		
+
 		return true;
 	}
 }

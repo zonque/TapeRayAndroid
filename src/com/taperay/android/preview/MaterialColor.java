@@ -2,8 +2,6 @@ package com.taperay.android.preview;
 
 import org.w3c.dom.Node;
 
-import android.util.Log;
-
 public class MaterialColor extends ServerObject {
 
 	private int r, g, b, id;

@@ -66,6 +66,16 @@ public class ContentManager {
 		return materialColors;
 	}
 
+	public MaterialColor getMaterialColorById(int id) {
+		for (int i = 0; i < materialColors.size(); i++) {
+			MaterialColor mc = materialColors.get(i);
+			if (mc.getId() == id)
+				return mc;
+		}
+
+		return null;
+	}
+
 	public List<Category> getCategories() {
 		return categories;
 	}

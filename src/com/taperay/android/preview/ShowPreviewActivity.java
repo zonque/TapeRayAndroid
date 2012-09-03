@@ -1,7 +1,6 @@
 package com.taperay.android.preview;
 
 import com.taperay.android.preview.R;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -40,11 +39,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 			dialog = null;
 		}
 
-		if (bitmap != null) {
-			artwork.setBitmapColor(contentManager.getCurrentColor());
-			return;
-		}
-
 		dialog = ProgressDialog.show(this,
 				getResources().getString(R.string.progress_dialog_header),
 				getResources().getString(R.string.loading_artwork),
@@ -58,7 +52,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 					displayNetworkErrorAndFinish();
 					return;
 				}
-				artwork.setBitmapColor(contentManager.getCurrentColor());
 
 				runOnUiThread(new Runnable() {
 					public void run() {
@@ -78,7 +71,6 @@ public class ShowPreviewActivity extends TapeRayActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-
 		TapeRayApplication app = (TapeRayApplication) getApplication();
 		contentManager = app.getContentManager();
 
@@ -92,6 +84,13 @@ public class ShowPreviewActivity extends TapeRayActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.preview_menu, menu);
+		MenuItem item = menu.findItem(R.id.change_color);
+
+		if (artwork.getNumColors() == 1)
+			item.setTitle(R.string.change_color);
+		else
+			item.setTitle(R.string.change_colors);
+
 		return true;
 	}
 
@@ -102,7 +101,13 @@ public class ShowPreviewActivity extends TapeRayActivity {
 		// Handle item selection
 		switch (item.getItemId()) {
 		case R.id.change_color:
-			i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
+			if (artwork.getNumColors() > 1) {
+				i = new Intent(ShowPreviewActivity.this, ShowColorNumbersActivity.class);
+				i.putExtra("numColors", artwork.getNumColors());
+			} else {
+				i = new Intent(ShowPreviewActivity.this, ShowColorsActivity.class);
+				i.putExtra("colorIndex", 0);
+			}
 			startActivity(i);
 			return true;
 		case R.id.visit_website:
@@ -117,7 +122,8 @@ public class ShowPreviewActivity extends TapeRayActivity {
 			s = s.replace("##ARTIST##", artwork.getArtistName());
 			s = s.replace("##MIN_SIZE##", artwork.getMinSize());
 			s = s.replace("##DATE##", artwork.getPublishedOn());
-			s = s.replace("##PRICE##", artwork.getPrice());			
+			s = s.replace("##PRICE##", artwork.getPrice());
+			s = s.replace("##NUM_COLORS##", Integer.toString(artwork.getNumColors()));
 
 			message.setText(Html.fromHtml(s), TextView.BufferType.SPANNABLE);
 			message.setMovementMethod(LinkMovementMethod.getInstance());

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -16,12 +14,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Node;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 
 public class Artwork extends ServerObject {
-	private Bitmap bitmap;
-	private RestClient restClient;
+	private Bitmap masksBitmap;
+	private MaterialColor[] color;
+	private int numColors;
 	String name;
 
 	static final String tag = "Artwork";
@@ -32,7 +34,7 @@ public class Artwork extends ServerObject {
 		HttpResponse resp;
 
 		try {
-			String imageURL = propertyHash.get("image_url");
+			String imageURL = propertyHash.get("masks_url");
 			request.setURI(new URI(imageURL));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -49,7 +51,7 @@ public class Artwork extends ServerObject {
 		try {
 			BufferedHttpEntity bufferedHttpEntity = new BufferedHttpEntity(resp.getEntity());
 			InputStream is = bufferedHttpEntity.getContent();
-			bitmap = BitmapFactory.decodeStream(is);
+			masksBitmap = BitmapFactory.decodeStream(is);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -73,9 +75,18 @@ public class Artwork extends ServerObject {
 	 */
 
 	public Artwork(Node node) {
-		restClient = new RestClient("artworks");
-		bitmap = null;
+		ContentManager contentManager = TapeRayApplication.getInstance().getContentManager();
+		masksBitmap = null;
 		readFromNode(node);
+
+		numColors = Integer.parseInt(propertyHash.get("num_colors"));
+		color = new MaterialColor[numColors];
+
+		for (int i = 0; i < numColors; i++) {
+			int id = Integer.parseInt(propertyHash.get("default_color_" + i));
+			MaterialColor mc = contentManager.getMaterialColorById(id);
+			color[i] = mc;
+		}
 
 		//		retrieve();
 	}
@@ -84,38 +95,64 @@ public class Artwork extends ServerObject {
 		return propertyHash.get("title");
 	}
 
-	public Bitmap getImageBitmap() throws ClientProtocolException, IOException {
-		if (bitmap == null)
-			retrieveBitmap();
-
-		return bitmap;
+	public void setMaterialColor(int index, MaterialColor mc) {
+		color[index] = mc;
 	}
 
-	public void setBitmapColor(MaterialColor color) {
-		if (bitmap == null)
-			return;
+	public Bitmap getImageBitmap() throws ClientProtocolException, IOException {
+		if (masksBitmap == null)
+			retrieveBitmap();
 
-		int size = bitmap.getHeight() * bitmap.getRowBytes();
-		ByteBuffer buffer = ByteBuffer.allocate(size);
-		buffer.order(ByteOrder.nativeOrder());
+		// find the outmost pixels, so we can generate a canvas that uses
+		// the biggest possible area
 
-		bitmap.copyPixelsToBuffer(buffer);
-		byte[] array = buffer.array();
+		int startX = masksBitmap.getWidth();
+		int endX = 0;
+		int startY = masksBitmap.getHeight();
+		int endY = 0;
 
-		for (int i = 0; i < size; i += 4) {
-			int alpha = (int) array[i + 3];
+		int heightPerColor = masksBitmap.getHeight() / numColors;
 
-			if (alpha != 0) {
-				array[i + 0] = color.getRed();
-				array[i + 1] = color.getGreen();
-				array[i + 2] = color.getBlue();
-				array[i + 3] = (byte) 0xff;
-			}
+		for (int c = 0; c < numColors; c++)
+			for (int x = 0; x < masksBitmap.getWidth(); x++)
+				for (int y = 0; y < heightPerColor; y++) {
+					int alpha = masksBitmap.getPixel(x, y + (c * heightPerColor));
+					if (alpha != 0) {
+						if (startX > x)
+							startX = x;
+						if (endX < x)
+							endX = x;
+						if (startY > y)
+							startY = y;
+						if (endY < y)
+							endY = y;
+					}
+				}
+
+		Bitmap alphaMask = masksBitmap.extractAlpha();
+
+		Bitmap dest = Bitmap.createBitmap(endX - startX,
+										  endY - startY,
+										  Bitmap.Config.ARGB_8888);
+
+		Canvas canvas = new Canvas(dest);
+		Paint paint = new Paint();
+		Rect dst = new Rect(0, 0, dest.getWidth(), dest.getHeight());
+
+		for (int c = 0; c < numColors; c++) {
+			int r = color[c].getRed();
+			int g = color[c].getGreen();
+			int b = color[c].getBlue();
+
+			Rect src = new Rect(startX, (heightPerColor * c) + startY,
+								endX, (heightPerColor * (c)) + endY);
+
+			paint.setARGB(255, r, g, b);
+			canvas.drawBitmap(alphaMask, src, dst, paint);
 		}
 
-		buffer.rewind();
-		bitmap.copyPixelsFromBuffer(buffer);
-		bitmap.prepareToDraw();
+		dest.prepareToDraw();
+		return dest;
 	}
 
 	public String getURL() {
@@ -145,5 +182,9 @@ public class Artwork extends ServerObject {
 
 	public String getCategoryName() {
 		return propertyHash.get("category");
+	}
+
+	public int getNumColors() {
+		return numColors;
 	}
 }

@@ -2,28 +2,35 @@ package com.taperay.android.preview;
 
 import org.w3c.dom.Node;
 
+import android.util.Log;
+
 public class MaterialColor extends ServerObject {
 
-	byte r, g, b;
+	private int r, g, b, id;
 
 	MaterialColor(Node node) {
 		readFromNode(node);
 
 		String color = propertyHash.get("rgb_hex");
-		r = (byte) (Integer.parseInt(color.substring(0, 2), 16));
-		g = (byte) (Integer.parseInt(color.substring(2, 4), 16));
-		b = (byte) (Integer.parseInt(color.substring(4, 6), 16));
+		r = Integer.parseInt(color.substring(0, 2), 16);
+		g = Integer.parseInt(color.substring(2, 4), 16);
+		b = Integer.parseInt(color.substring(4, 6), 16);
+		id = Integer.parseInt(propertyHash.get("id"));
 	}
 
-	public Byte getRed() {
+	public int getRed() {
 		return r;
 	}
 
-	public Byte getGreen() {
+	public int getGreen() {
 		return g;
 	}
 
-	public Byte getBlue() {
+	public int getBlue() {
 		return b;
+	}
+
+	public int getId() {
+		return id;
 	}
 }

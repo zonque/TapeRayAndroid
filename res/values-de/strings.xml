@@ -9,6 +9,9 @@
     <string name="loading_artworks">Artworks werden geladen, bitte warten …</string>
     <string name="loading_artwork">Artwork wird geladen …</string>
     <string name="change_color">Farbe ändern</string>
+    <string name="change_colors">Farben ändern</string>
+    <string name="color">Farbe</string>
+    <string name="select_color_to_change">Farbe auswählen</string>
     <string name="categories">Kategorien</string>
     <string name="network_error_title">Netzwerkfehler</string>
     <string name="network_error_message">Daten konnten nicht geladen werden.</string>
@@ -39,6 +42,7 @@
         	<p>Datum: ##DATE##</p>
         	<p>Mindestgrösse: ##MIN_SIZE##</p>
         	<p>Künstlerpreis pro m²: ##PRICE##</p>
+			<p>Farben: ##NUM_COLORS##</p>
         ]]>
     </string>
     

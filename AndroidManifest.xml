@@ -27,7 +27,6 @@
             <meta-data android:name="android.app.default_searchable"
                    android:value=".ShowArtworksActivity" />
         </activity>
-        
 
 		<activity android:name=".ShowArtworksActivity">
 		    <intent-filter>
@@ -46,7 +45,11 @@
         	<meta-data android:name="android.app.default_searchable"
                    android:value=".ShowArtworksActivity" />
 		</activity>
-    
+
+        <activity android:name=".ShowColorNumbersActivity"
+				  android:theme="@android:style/Theme.Dialog">
+		</activity>
+
         <activity android:name=".ShowColorsActivity">
 		    <meta-data android:name="android.app.default_searchable"
                    android:value=".ShowArtworksActivity" />

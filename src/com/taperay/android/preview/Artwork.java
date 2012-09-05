@@ -131,13 +131,13 @@ public class Artwork extends ServerObject {
 
 		Bitmap alphaMask = masksBitmap.extractAlpha();
 
-		Bitmap dest = Bitmap.createBitmap(endX - startX,
+		Bitmap outBitmap = Bitmap.createBitmap(endX - startX,
 										  endY - startY,
 										  Bitmap.Config.ARGB_8888);
 
-		Canvas canvas = new Canvas(dest);
+		Canvas canvas = new Canvas(outBitmap);
 		Paint paint = new Paint();
-		Rect dst = new Rect(0, 0, dest.getWidth(), dest.getHeight());
+		Rect dst = new Rect(0, 0, outBitmap.getWidth(), outBitmap.getHeight());
 
 		for (int c = 0; c < numColors; c++) {
 			int r = color[c].getRed();
@@ -151,8 +151,8 @@ public class Artwork extends ServerObject {
 			canvas.drawBitmap(alphaMask, src, dst, paint);
 		}
 
-		dest.prepareToDraw();
-		return dest;
+		outBitmap.prepareToDraw();
+		return outBitmap;
 	}
 
 	public String getURL() {

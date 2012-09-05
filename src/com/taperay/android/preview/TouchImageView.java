@@ -114,10 +114,10 @@ public class TouchImageView extends ImageView {
 		});
 	}
 
-	public void setImageBitmap(Bitmap bm, boolean initSize) {
+	public void setImageBitmap(Bitmap bm) {
 		super.setImageBitmap(bm);
 
-		if(bm != null && initSize) {
+		if(bmWidth == 0) {
 			bmWidth = bm.getWidth();
 			bmHeight = bm.getHeight();
 			measured = false;

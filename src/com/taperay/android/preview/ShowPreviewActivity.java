@@ -55,7 +55,7 @@ public class ShowPreviewActivity extends TapeRayActivity {
 
 				runOnUiThread(new Runnable() {
 					public void run() {
-						imageView.setImageBitmap(bitmap, true);
+						imageView.setImageBitmap(bitmap);
 					}
 				});
 

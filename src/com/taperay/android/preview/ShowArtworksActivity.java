@@ -1,6 +1,7 @@
 package com.taperay.android.preview;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,7 @@ public class ShowArtworksActivity extends TapeRayActivity {
 
 	private ContentManager contentManager;
 	private String[] artworkTitles;
+	private ProgressDialog dialog;
 
 	private void showArtworks() {
 		artworkTitles = contentManager.getArtworkTitles();
@@ -69,15 +71,28 @@ public class ShowArtworksActivity extends TapeRayActivity {
 		Intent intent = getIntent();
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			final String query = intent.getStringExtra(SearchManager.QUERY);
+			dialog = ProgressDialog.show(ShowArtworksActivity.this,
+					getResources().getString(R.string.progress_dialog_header),
+					getResources().getString(R.string.searching_for_artworks),
+					true);
 
 			new Thread(new Runnable() {
 				public void run() {
 					try {
 						contentManager.performSearch(query);
 					} catch (Exception e) {
+						if (dialog != null) {
+							dialog.dismiss();
+							dialog = null;
+						}
 						e.printStackTrace();
 						displayNetworkErrorAndFinish();
 						return;
+					}
+
+					if (dialog != null) {
+						dialog.dismiss();
+						dialog = null;
 					}
 
 					runOnUiThread(new Runnable() {

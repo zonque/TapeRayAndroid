@@ -7,6 +7,7 @@
     <string name="progress_dialog_header">TapeRay Server</string>
     <string name="loading_data">Daten werden geladen, bitte warten …</string>
     <string name="loading_artworks">Artworks werden geladen, bitte warten …</string>
+    <string name="searching_for_artworks">Suche nach Artworks, bitte warten …</string>
     <string name="loading_artwork">Artwork wird geladen …</string>
     <string name="change_color">Farbe ändern</string>
     <string name="change_colors">Farben ändern</string>

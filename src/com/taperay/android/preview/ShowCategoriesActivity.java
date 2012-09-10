@@ -94,4 +94,12 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 		}).start();
 	}
 
+	@Override
+	public void onPause() {
+		super.onPause();
+
+		if (dialog != null)
+			dialog.dismiss();
+	}
+
 }

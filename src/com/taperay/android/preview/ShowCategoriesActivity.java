@@ -61,10 +61,10 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 		});
 	}
 
-	/** Called when the activity is first created. */
+	/** Called when the activity is started or restarted. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onStart() {
+		super.onStart();
 
 		setContentView(R.layout.categories);
 		setTitle("TapeRay > " + getResources().getString(R.string.categories));
@@ -94,13 +94,4 @@ public class ShowCategoriesActivity extends TapeRayActivity {
 		}).start();
 	}
 
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		if (dialog != null) {
-			dialog.dismiss();
-			dialog = null;
-		}
-	}
 }

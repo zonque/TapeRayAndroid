@@ -56,10 +56,10 @@ public class ShowArtworksActivity extends TapeRayActivity {
 		listView.setAdapter(adapter);
 	}
 
-	/** Called when the activity is first created. */
+	/** Called when the activity is started or restarted. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	protected void onStart() {
+		super.onStart();
 
 		setContentView(R.layout.artworks);
 
